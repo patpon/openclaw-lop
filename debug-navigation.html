@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Navigation - น้องแก้วใส</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .debug-section h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Debug Navigation - น้องแก้วใส (GLM-5)</h1>
+    
+    <div class="debug-section">
+        <h3>🎯 ปัญหา: เมนูคลิกแล้วข้อมูลไม่มา</h3>
+        <p>น้องแก้วใสจะตรวจสอบทีละส่วนเพื่อหาสาเหตุที่แท้จริง</p>
+    </div>
+    
+    <div class="debug-section">
+        <h3>🧪 ทดสอบทีละขั้นตอน:</h3>
+        
+        <h4>1️⃣ ทดสอบว่ามี Element จริงไหม:</h4>
+        <button class="test-button" onclick="testElementExists()">ทดสอบ Element</button>
+        <div id="elementResult"></div>
+        
+        <h4>2️⃣ ทดสอบว่าฟังก์ชั่นทำงานไหม:</h4>
+        <button class="test-button" onclick="testFunction()">ทดสอบฟังก์ชั่น showSection</button>
+        <div id="functionResult"></div>
+        
+        <h4>3️⃣ ทดสอบว่าแสดงผลได้ไหม:</h4>
+        <button class="test-button" onclick="testDisplay()">ทดสอบการแสดงผล</button>
+        <div id="displayResult"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>📋 สิ่งที่ตรวจสอบ:</h3>
+        <ul>
+            <li>✅ มี <code>&lt;div id="secondbrain"&gt;</code> จริงไหม</li>
+            <li>✅ ฟังก์ชั่น <code>showSection()</code> ทำงานไหม</li>
+            <li>✅ <code>getElementById()</code> หา element ได้ไหม</li>
+            <li>✅ <code>style.display = 'block'</code> ทำงานไหม</li>
+            <li>✅ มี JavaScript error หรือไม่</li>
+        </ul>
+    </div>
+    
+    <div class="debug-section">
+        <h3>🔍 วิธีใช้:</h3>
+        <ol>
+            <li>เปิดหน้านี้ใน browser</li>
+            <li>กด F12 เปิด Developer Console</li>
+            <li>คลิกปุ่ม "ทดสอบ" แต่ละปุ่ม</li>
+            <li>ดูผลลัพธ์และ Console log</li>
+        </ol>
+    </div>
+    
+    <div class="debug-section">
+        <h3>💡 ถ้ายังไม่ได้:</h3>
+        <ul>
+            <li>Console แสดง error อะไร</li>
+            <li>Browser แสดง security warning หรือไม่</li>
+            <li>มี popup blocker ทำงานหรือไม่</li>
+            <li>Service worker ทำงานหรือไม่</li>
+        </ul>
+    </div>
+    
+    <div class="debug-section">
+        <h3>🚀 ที่แก้ไขแล้ว:</h3>
+        <div class="code-block">
+// เปลี่ยนจาก querySelectorAll เป็น getElementById
+const targetSection = document.getElementById(sectionId);
+
+// เพิ่ม debug logging
+console.log('Target section:', targetSection);
+console.log('Section displayed:', sectionId);
+        </div>
+    </div>
+
+    <script>
+        function testElementExists() {
+            const result = document.getElementById('elementResult');
+            try {
+                const element = document.getElementById('secondbrain');
+                if (element) {
+                    result.innerHTML = '<div class="alert alert-success">✅ Element มีจริง: ' + element.id + '</div>';
+                    console.log('✅ Element found:', element);
+                } else {
+                    result.innerHTML = '<div class="alert alert-danger">❌ ไม่พบ Element</div>';
+                    console.log('❌ Element not found');
+                }
+            } catch (error) {
+                result.innerHTML = '<div class="alert alert-danger">❌ Error: ' + error.message + '</div>';
+                console.log('❌ Error:', error);
+            }
+        }
+        
+        function testFunction() {
+            const result = document.getElementById('functionResult');
+            try {
+                console.log('Testing showSection function...');
+                result.innerHTML = '<div class="alert alert-info">⏳ กำลังทดสอบฟังก์ชั่น...</div>';
+                
+                // จำลองการเรียก showSection
+                console.log('showSection called with: secondbrain');
+                
+                const sections = document.querySelectorAll('.content-section');
+                console.log('Found sections:', sections.length);
+                
+                const targetSection = document.getElementById('secondbrain');
+                console.log('Target section:', targetSection);
+                
+                if (targetSection) {
+                    console.log('✅ Function test successful');
+                    result.innerHTML = '<div class="alert alert-success">✅ ฟังก์ชั่นทำงานได้</div>';
+                } else {
+                    console.log('❌ Function test failed');
+                    result.innerHTML = '<div class="alert alert-danger">❌ ฟังก์ชั่นทำงานไม่ได้</div>';
+                }
+            } catch (error) {
+                result.innerHTML = '<div class="alert alert-danger">❌ Error: ' + error.message + '</div>';
+                console.log('❌ Error:', error);
+            }
+        }
+        
+        function testDisplay() {
+            const result = document.getElementById('displayResult');
+            try {
+                const element = document.getElementById('secondbrain');
+                if (element) {
+                    // บันทึกค่าเดิม
+                    const originalDisplay = element.style.display;
+                    console.log('Original display:', originalDisplay);
+                    
+                    // เปลี่ยนเป็น block
+                    element.style.display = 'block';
+                    console.log('Changed to block');
+                    
+                    // ตรวจสอบ
+                    setTimeout(() => {
+                        const currentDisplay = element.style.display;
+                        console.log('Current display:', currentDisplay);
+                        
+                        if (currentDisplay === 'block') {
+                            result.innerHTML = '<div class="alert alert-success">✅ แสดงผลได้</div>';
+                        } else {
+                            result.innerHTML = '<div class="alert alert-danger">❌ แสดงผลไม่ได้</div>';
+                        }
+                        
+                        // คืนค่าเดิม
+                        element.style.display = originalDisplay;
+                    }, 100);
+                } else {
+                    result.innerHTML = '<div class="alert alert-danger">❌ ไม่พบ Element</div>';
+                }
+            } catch (error) {
+                result.innerHTML = '<div class="alert alert-danger">❌ Error: ' + error.message + '</div>';
+                console.log('❌ Error:', error);
+            }
+        }
+        
+        // ทดสอบอัตโนมัติเมื่อโหลดหน้า
+        window.onload = function() {
+            console.log('🚀 Debug page loaded');
+            testElementExists();
+        };
+    </script>
+</body>
+</html>

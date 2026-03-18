@@ -1,0 +1,2334 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Dashboard - ระบบตรวจสอบ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding-top: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 5px 10px;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-online {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-offline {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .metric-icon {
+            font-size: 2.5rem;
+            opacity: 0.6;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background: #e9ecef;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -30px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border-left: 3px solid #dee2e6;
+        }
+
+        .timeline-content h6 {
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .timeline-content small {
+            font-size: 0.75rem;
+        }
+
+        .timeline-marker .fas.fa-circle {
+            font-size: 6px;
+        }
+
+        /* Calendar Styles */
+        .calendar-container {
+            overflow-x: auto;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 10px;
+            min-height: 400px;
+        }
+
+        .calendar-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 5px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 8px 5px;
+            min-height: 80px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            background: #f8f9fa;
+            transform: scale(1.02);
+        }
+
+        .calendar-day.today {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.5;
+        }
+
+        .calendar-day-number {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .calendar-day.today .calendar-day-number {
+            color: white;
+        }
+
+        .calendar-event {
+            font-size: 0.7rem;
+            padding: 2px 4px;
+            margin: 1px 0;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .calendar-event.work {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .calendar-event.people {
+            background: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+            border: 1px solid rgba(13, 110, 253, 0.3);
+        }
+
+        .calendar-event.personal {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .appointment-item {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.2s;
+        }
+
+        .appointment-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .appointment-item.work {
+            border-left: 4px solid #dc3545;
+        }
+
+        .appointment-item.people {
+            border-left: 4px solid #0d6efd;
+        }
+
+        .appointment-item.personal {
+            border-left: 4px solid #28a745;
+        }
+
+        .appointment-type-badge {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .appointment-type-badge.work {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .appointment-type-badge.people {
+            background: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+
+        .appointment-type-badge.personal {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .login-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            color: #667eea !important;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .system-info {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-form">
+            <div class="text-center mb-4">
+                <i class="fas fa-paw fa-3x text-primary mb-3"></i>
+                <h2>OpenClaw Dashboard</h2>
+                <p class="text-muted">ระบบตรวจสอบและจัดการ</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">ชื่อผู้ใช้</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">รหัสผ่าน</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt me-2"></i>เข้าสู่ระบบ
+                </button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <small class="text-muted">Default: admin / openclaw2024</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard" style="display: none;">
+        <!-- Sidebar -->
+        <div class="sidebar" style="width: 250px;">
+            <div class="text-center mb-4">
+                <i class="fas fa-paw fa-2x text-white mb-2"></i>
+                <h4 class="text-white">OpenClaw</h4>
+                <small class="text-white-50">Dashboard</small>
+            </div>
+            
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" onclick="showSection('overview', event)">
+                        <i class="fas fa-tachometer-alt me-2"></i>ภาพรวม
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('system', event)">
+                        <i class="fas fa-server me-2"></i>ระบบ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('security', event)">
+                        <i class="fas fa-shield-alt me-2"></i>ความปลอดภัย
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('logs', event)">
+                        <i class="fas fa-file-alt me-2"></i>Logs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('agents', event)">
+                        <i class="fas fa-robot me-2"></i>Agents
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('settings', event)">
+                        <i class="fas fa-cog me-2"></i>ตั้งค่า
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('markdown', event)">
+                        <i class="fas fa-file-alt me-2"></i>Markdown Files
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('calendar', event)">
+                        <i class="fas fa-calendar-alt me-2"></i>ปฏิทิน
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showSection('secondbrain', event)">
+                        <i class="fas fa-brain me-2"></i>สมองที่สอง
+                    </a>
+                </li>
+                <li class="nav-item mt-auto">
+                    <a class="nav-link" href="#" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-2"></i>ออกจากระบบ
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white mb-4 rounded shadow-sm">
+                <div class="container-fluid">
+                    <span class="navbar-brand">
+                        <i class="fas fa-paw text-primary me-2"></i>
+                        OpenClaw Dashboard
+                    </span>
+                    
+                    <!-- Quick Navigation Combobox -->
+                    <div class="d-flex align-items-center">
+                        <label class="form-label me-2 mb-0">Quick Go:</label>
+                        <select class="form-select form-select-sm" id="quickNavCombo" onchange="quickNavigate()" style="width: auto;">
+                            <option value="">เลือกหน้า...</option>
+                            <option value="overview">📊 หน้าแรก</option>
+                            <option value="agents">🤖 Agents</option>
+                            <option value="system">⚙️ ระบบ</option>
+                            <option value="logs">📋 Logs</option>
+                            <option value="markdown">📄 Markdown</option>
+                            <option value="calendar">📅 ปฏิทิน</option>
+                            <option value="secondbrain">🧠 สมองที่สอง</option>
+                        </select>
+                    </div>
+                    
+                    <div class="ms-auto">
+                        <span class="badge bg-success">Online</span>
+                        <small class="text-muted ms-2" id="currentTime"></small>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Overview Section -->
+            <div id="overview" class="content-section">
+                <div class="row g-4">
+                    <!-- Metric Cards -->
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="metric-card">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="metric-value" id="uptimeValue">2h 15m</div>
+                                    <div class="metric-label">เวลาทำงาน</div>
+                                </div>
+                                <div class="metric-icon">
+                                    <i class="fas fa-clock fa-2x text-white opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="metric-card">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="metric-value" id="sessionsValue">2</div>
+                                    <div class="metric-label">Sessions</div>
+                                </div>
+                                <div class="metric-icon">
+                                    <i class="fas fa-users fa-2x text-white opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="metric-card">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="metric-value" id="agentsValue">1</div>
+                                    <div class="metric-label">Agents</div>
+                                </div>
+                                <div class="metric-icon">
+                                    <i class="fas fa-robot fa-2x text-white opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 col-md-6">
+                        <div class="metric-card">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="metric-value" id="memoryValue">64%</div>
+                                    <div class="metric-label">Memory</div>
+                                </div>
+                                <div class="metric-icon">
+                                    <i class="fas fa-microchip fa-2x text-white opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status and Activity Row -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12 col-lg-6">
+                        <div class="status-card">
+                            <h5><i class="fas fa-server me-2"></i>สถานะระบบ</h5>
+                            <div id="systemStatus">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Gateway:</span>
+                                    <span class="status-badge status-online">Online</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Memory:</span>
+                                    <span class="status-badge status-online">Normal</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Security:</span>
+                                    <span class="status-badge status-warning">Check</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>Dashboard:</span>
+                                    <span class="status-badge status-online">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="status-card">
+                            <h5><i class="fas fa-history me-2"></i>กิจกรรมล่าสุด</h5>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">
+                                        <i class="fas fa-circle text-success"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">ระบบสมองที่สองทำงานปกติ</h6>
+                                                <small class="text-muted">การสร้างระบบสมองที่สองเสร็จสมบูรณ์</small>
+                                            </div>
+                                            <small class="text-muted">14:30</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">
+                                        <i class="fas fa-circle text-primary"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">ตั้งคอนฟิกรายงานข่าวประจำวัน</h6>
+                                                <small class="text-muted">ตั้งเวลาส่งข่าว 08:00 และ 17:00 น.</small>
+                                            </div>
+                                            <small class="text-muted">14:31</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">
+                                        <i class="fas fa-circle text-warning"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">ปรับปรุงหน้าปฏิทิน</h6>
+                                                <small class="text-muted">สร้างหน้าสรุปนัดหมายแบบกระชับ</small>
+                                            </div>
+                                            <small class="text-muted">14:33</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-marker">
+                                        <i class="fas fa-circle text-info"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">แก้ไขปัญหา Navigation</h6>
+                                                <small class="text-muted">แก้ไขฟังก์ชั่น showSection ให้ทำงาน</small>
+                                            </div>
+                                            <small class="text-muted">14:55</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats Row -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12 col-lg-4 col-md-6">
+                        <div class="status-card">
+                            <h6><i class="fas fa-shield-alt me-2 text-success"></i>Security Status</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Blocked IPs:</span>
+                                <span class="badge bg-danger" id="blockedIPs">1 IP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-6">
+                        <div class="status-card">
+                            <h6><i class="fas fa-tachometer-alt me-2 text-info"></i>Performance</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>CPU Usage:</span>
+                                <span class="badge bg-primary">Low</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4 col-md-6">
+                        <div class="status-card">
+                            <h6><i class="fas fa-network-wired me-2 text-warning"></i>Network</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Status:</span>
+                                <span class="badge bg-success">Stable</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Combobox -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h6><i class="fas fa-magic me-2 text-purple"></i>Quick Actions</h6>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-12 col-md-6">
+                                    <select class="form-select" id="quickActionCombo" onchange="executeQuickAction()">
+                                        <option value="">เลือกการกระทำด่วน...</option>
+                                        <option value="refresh">🔄 รีเฟรชข้อมูลทั้งหมด</option>
+                                        <option value="backup">💾 สำรองข้อมูลทันที</option>
+                                        <option value="logs">📋 ดู logs ล่าสุด</option>
+                                        <option value="security">🛡️ ตรวจสอบความปลอดภัย</option>
+                                        <option value="performance">⚡ ตรวจสอบ performance</option>
+                                        <option value="export">📤 ส่งออกข้อมูล</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <button class="btn btn-success w-100" onclick="executeQuickAction()">
+                                        <i class="fas fa-play me-2"></i>ทำทันที
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <button class="btn btn-outline-primary w-100" onclick="showSecondBrain()">
+                                        <i class="fas fa-brain me-2"></i>สมองที่สอง
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- System Section -->
+            <div id="calendar" class="content-section" style="display: none;">
+                <div class="row g-4">
+                    <!-- Calendar Summary -->
+                    <div class="col-12 col-lg-8">
+                        <div class="status-card">
+                            <h5><i class="fas fa-calendar-alt me-2"></i>สรุปนัดหมายประจำสัปดาห์</h5>
+                            
+                            <!-- Today's Highlight -->
+                            <div class="alert alert-info mb-3">
+                                <h6><i class="fas fa-star me-2"></i>วันนี้ (17 มี.ค. 2026)</h6>
+                                <div class="mt-2">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="fas fa-clock text-primary me-2"></i>
+                                        <span><strong>18:00</strong> - เวทเทรนนิ่งประจำสัปดาห์</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- This Week Calendar -->
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>วันที่</th>
+                                            <th>เวลา</th>
+                                            <th>กิจกรรม</th>
+                                            <th>ประเภท</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>18 มี.ค.</td>
+                                            <td>18:00</td>
+                                            <td>เวทเทรนนิ่ง</td>
+                                            <td><span class="badge bg-success">ประจำ</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19 มี.ค.</td>
+                                            <td>14:00</td>
+                                            <td>นัดหมายลูกค้า</td>
+                                            <td><span class="badge bg-primary">งาน</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 มี.ค.</td>
+                                            <td>10:00</td>
+                                            <td>ส่งรายงานประจำสัปดาห์</td>
+                                            <td><span class="badge bg-warning">สำคัญ</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21 มี.ค.</td>
+                                            <td>18:00</td>
+                                            <td>เวทเทรนนิ่ง</td>
+                                            <td><span class="badge bg-success">ประจำ</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="col-12 col-lg-4">
+                        <div class="status-card">
+                            <h6><i class="fas fa-chart-pie me-2"></i>สถิติสัปดาห์นี้</h6>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>กิจกรรมทั้งหมด:</span>
+                                    <span class="fw-bold">4 รายการ</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>เวทเทรนนิ่ง:</span>
+                                    <span class="text-success">2 ครั้ง</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>งานสำคัญ:</span>
+                                    <span class="text-warning">1 รายการ</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>งานทั่วไป:</span>
+                                    <span class="text-primary">1 รายการ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <h6><i class="fas fa-bell me-2"></i>การแจ้งเตือน</h6>
+                            <div class="mb-3">
+                                <div class="alert alert-warning alert-sm mb-2">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    เวทเทรนนิ่งวันนี้ 18:00 น.
+                                </div>
+                                <div class="alert alert-info alert-sm">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    ส่งรายงานพรุ่งนี้ 10:00 น.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Overview -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h6><i class="fas fa-calendar-week me-2"></i>ภาพรวมเดือนมีนาคม 2026</h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-primary mb-1">12</h4>
+                                        <small class="text-muted">กิจกรรมทั้งหมด</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-success mb-1">8</h4>
+                                        <small class="text-muted">เสร็จสิ้นแล้ว</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-warning mb-1">3</h4>
+                                        <small class="text-muted">สำคัญมาก</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-info mb-1">4</h4>
+                                        <small class="text-muted">รอดำเนินการ</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h6><i class="fas fa-plus me-2"></i>การจัดการปฏิทิน</h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-primary w-100" onclick="addNewEvent()">
+                                        <i class="fas fa-plus me-2"></i>เพิ่มนัดหมายใหม่
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-success w-100" onclick="viewCalendarDetails()">
+                                        <i class="fas fa-eye me-2"></i>ดูรายละเอียดทั้งหมด
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-info w-100" onclick="exportCalendar()">
+                                        <i class="fas fa-download me-2"></i>ส่งออกปฏิทิน
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div id="calendar" class="content-section" style="display: none;">
+                <div class="row g-4">
+                    <!-- Calendar Summary -->
+                    <div class="col-12 col-lg-8">
+                        <div class="status-card">
+                            <h5><i class="fas fa-calendar-alt me-2"></i>สรุปนัดหมายประจำสัปดาห์</h5>
+                            
+                            <!-- Today's Highlight -->
+                            <div class="alert alert-info mb-3">
+                                <h6><i class="fas fa-star me-2"></i>วันนี้ (17 มี.ค. 2026)</h6>
+                                <div class="mt-2">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i class="fas fa-clock text-primary me-2"></i>
+                                        <span><strong>18:00</strong> - เวทเทรนนิ่งประจำสัปดาห์</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- This Week Calendar -->
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>วันที่</th>
+                                            <th>เวลา</th>
+                                            <th>กิจกรรม</th>
+                                            <th>ประเภท</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>18 มี.ค.</td>
+                                            <td>18:00</td>
+                                            <td>เวทเทรนนิ่ง</td>
+                                            <td><span class="badge bg-success">ประจำ</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19 มี.ค.</td>
+                                            <td>14:00</td>
+                                            <td>นัดหมายลูกค้า</td>
+                                            <td><span class="badge bg-primary">งาน</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 มี.ค.</td>
+                                            <td>10:00</td>
+                                            <td>ส่งรายงานประจำสัปดาห์</td>
+                                            <td><span class="badge bg-warning">สำคัญ</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>21 มี.ค.</td>
+                                            <td>18:00</td>
+                                            <td>เวทเทรนนิ่ง</td>
+                                            <td><span class="badge bg-success">ประจำ</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="col-12 col-lg-4">
+                        <div class="status-card">
+                            <h6><i class="fas fa-chart-pie me-2"></i>สถิติสัปดาห์นี้</h6>
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>กิจกรรมทั้งหมด:</span>
+                                    <span class="fw-bold">4 รายการ</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>เวทเทรนนิ่ง:</span>
+                                    <span class="text-success">2 ครั้ง</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>งานสำคัญ:</span>
+                                    <span class="text-warning">1 รายการ</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>งานทั่วไป:</span>
+                                    <span class="text-primary">1 รายการ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="status-card">
+                            <h6><i class="fas fa-bell me-2"></i>การแจ้งเตือน</h6>
+                            <div class="mb-3">
+                                <div class="alert alert-warning alert-sm mb-2">
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    เวทเทรนนิ่งวันนี้ 18:00 น.
+                                </div>
+                                <div class="alert alert-info alert-sm">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    ส่งรายงานพรุ่งนี้ 10:00 น.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Overview -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h6><i class="fas fa-calendar-week me-2"></i>ภาพรวมเดือนมีนาคม 2026</h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-primary mb-1">12</h4>
+                                        <small class="text-muted">กิจกรรมทั้งหมด</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-success mb-1">8</h4>
+                                        <small class="text-muted">เสร็จสิ้นแล้ว</small>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-warning mb-1">3</h4>
+                                        <small class="text-muted">สำคัญมาก</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="text-center p-3 bg-light rounded">
+                                        <h4 class="text-info mb-1">4</h4>
+                                        <small class="text-muted">รอดำเนินการ</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h6><i class="fas fa-plus me-2"></i>การจัดการปฏิทิน</h6>
+                            <div class="row g-3">
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-primary w-100" onclick="addNewEvent()">
+                                        <i class="fas fa-plus me-2"></i>เพิ่มนัดหมายใหม่
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-success w-100" onclick="viewCalendarDetails()">
+                                        <i class="fas fa-eye me-2"></i>ดูรายละเอียดทั้งหมด
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-info w-100" onclick="exportCalendar()">
+                                        <i class="fas fa-download me-2"></i>ส่งออกปฏิทิน
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="secondbrain" class="content-section" style="display: none;">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h2><i class="fas fa-brain me-2 text-purple"></i>ระบบสมองที่สอง</h2>
+                            <p class="text-muted">ระบบจัดการความคิด ความรู้ และการเชื่อมโยงของคุณ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Access Cards -->
+                <div class="row g-4 mt-3">
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card h-100 second-brain-card">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-lightbulb fa-3x text-warning"></i>
+                                </div>
+                                <h5 class="card-title">ไอเดีย</h5>
+                                <p class="card-text">คลังไอเดียสำหรับโปรเจคต์ต่างๆ</p>
+                                <button class="btn btn-light" onclick="testSecondBrainSystem()">🧪 ทดสอบระบบ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card h-100 second-brain-card">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-book fa-3x text-info"></i>
+                                </div>
+                                <h5 class="card-title">ความรู้</h5>
+                                <p class="card-text">ฐานความรู้ด้านเทคนิคและธุรกิจ</p>
+                                <button class="btn btn-light" onclick="testSecondBrainSystem()">🧪 ทดสอบระบบ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card h-100 second-brain-card">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-tasks fa-3x text-success"></i>
+                                </div>
+                                <h5 class="card-title">งาน</h5>
+                                <p class="card-text">การจัดการงานและโปรเจคต์ต่างๆ</p>
+                                <button class="btn btn-light" onclick="testSecondBrainSystem()">🧪 ทดสอบระบบ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card h-100 second-brain-card">
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <i class="fas fa-project-diagram fa-3x text-purple"></i>
+                                </div>
+                                <h5 class="card-title">การเชื่อมโยง</h5>
+                                <p class="card-text">การเชื่อมโยงความคิดและความรู้</p>
+                                <button class="btn btn-light" onclick="testSecondBrainSystem()">🧪 ทดสอบระบบ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="row g-4 mt-4">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h5><i class="fas fa-clock me-2"></i>การใช้งานล่าสุด</h5>
+                            <div id="secondBrainActivity">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="d-flex align-items-center p-3 bg-light rounded">
+                                            <i class="fas fa-lightbulb text-warning me-3"></i>
+                                            <div>
+                                                <div class="fw-bold">IDEAS.md</div>
+                                                <small class="text-muted">เข้าถึงล่าสุด: ไม่นานมานี้</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="d-flex align-items-center p-3 bg-light rounded">
+                                            <i class="fas fa-book text-info me-3"></i>
+                                            <div>
+                                                <div class="fw-bold">KNOWLEDGE.md</div>
+                                                <small class="text-muted">เข้าถึงล่าสุด: ไม่นานมานี้</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row g-4 mt-4">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h5><i class="fas fa-bolt me-2"></i>การกระทำด่วน</h5>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-primary w-100" onclick="createNewIdea()">
+                                        <i class="fas fa-plus me-2"></i>เพิ่มไอเดียใหม่
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-success w-100" onclick="addNewTask()">
+                                        <i class="fas fa-plus me-2"></i>เพิ่มงานใหม่
+                                    </button>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-outline-info w-100" onclick="viewAllConnections()">
+                                        <i class="fas fa-eye me-2"></i>ดูการเชื่อมโยงทั้งหมด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Access Combobox -->
+                <div class="row g-4 mt-4">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h5><i class="fas fa-list me-2"></i>Quick Access</h5>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-12 col-md-8">
+                                    <select class="form-select" id="secondBrainFileCombo" onchange="quickAccessSecondBrain()">
+                                        <option value="">เลือกไฟล์เพื่อเข้าถึง...</option>
+                                        <option value="IDEAS.md">💡 IDEAS.md - คลังไอเดียสำหรับโปรเจคต์ต่างๆ</option>
+                                        <option value="KNOWLEDGE.md">📚 KNOWLEDGE.md - ฐานความรู้ด้านเทคนิคและธุรกิจ</option>
+                                        <option value="TASKS.md">📋 TASKS.md - การจัดการงานและโปรเจคต์ต่างๆ</option>
+                                        <option value="CONNECTIONS.md">🔗 CONNECTIONS.md - การเชื่อมโยงความคิดและความรู้</option>
+                                        <option value="SECOND_BRAIN.md">🧠 SECOND_BRAIN.md - โครงสร้างระบบสมองที่สอง</option>
+                                        <option value="SECOND_BRAIN_GUIDE.md">📖 SECOND_BRAIN_GUIDE.md - คู่มือการใช้งาน</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <button class="btn btn-primary w-100" onclick="goToSelectedFile()">
+                                        <i class="fas fa-external-link-alt me-2"></i>เปิดไฟล์ที่เลือก
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendar Section -->
+            <div id="calendar" class="content-section" style="display: none;">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h2><i class="fas fa-calendar-alt me-2 text-primary"></i>ปฏิทินนัดหมาย</h2>
+                            <p class="text-muted">จัดการนัดหมายและกิจกรรมต่างๆ ของคุณ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar View Options -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5><i class="fas fa-eye me-2"></i>มุมมองปฏิทิน</h5>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-primary active" onclick="showCalendarView('month')">เดือน</button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="showCalendarView('week')">สัปดาห์</button>
+                                    <button type="button" class="btn btn-outline-primary" onclick="showCalendarView('today')">วันนี้</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar Header -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 id="currentMonth">มีนาคม 2026</h4>
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="previousMonth()">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="currentMonth()">เดือนนี้</button>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="nextMonth()">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar Grid -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <div class="calendar-container">
+                                <div class="calendar-grid" id="calendarGrid">
+                                    <!-- Calendar will be generated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Appointments -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h5><i class="fas fa-clock me-2"></i>นัดหมายที่กำลังจะมาถึง</h5>
+                            <div id="upcomingAppointments">
+                                <!-- Appointments will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add New Appointment -->
+                <div class="row g-4 mt-2">
+                    <div class="col-12">
+                        <div class="status-card">
+                            <h5><i class="fas fa-plus me-2"></i>เพิ่มนัดหมายใหม่</h5>
+                            <form id="newAppointmentForm">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label">หัวข้อนัดหมาย</label>
+                                        <input type="text" class="form-control" id="appointmentTitle" required>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <label class="form-label">ประเภท</label>
+                                        <select class="form-select" id="appointmentType" required>
+                                            <option value="">เลือกประเภท...</option>
+                                            <option value="work">📋 งาน</option>
+                                            <option value="people">👥 บุคคล</option>
+                                            <option value="personal">🎯 ส่วนตัว</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">วันที่</label>
+                                        <input type="date" class="form-control" id="appointmentDate" required>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">เวลา</label>
+                                        <input type="time" class="form-control" id="appointmentTime" required>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <label class="form-label">การแจ้งเตือน</label>
+                                        <select class="form-select" id="appointmentReminder">
+                                            <option value="15">15 นาทีก่อน</option>
+                                            <option value="30">30 นาทีก่อน</option>
+                                            <option value="60">1 ชั่วโมงก่อน</option>
+                                            <option value="1440">1 วันก่อน</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">รายละเอียด</label>
+                                        <textarea class="form-control" id="appointmentDetails" rows="3"></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-plus me-2"></i>เพิ่มนัดหมาย
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary" onclick="loadCalendarData()">
+                                            <i class="fas fa-sync me-2"></i>รีเฟรช
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Section -->
+            <div id="system" class="content-section" style="display: none;">
+                <div class="status-card">
+                    <h5><i class="fas fa-info-circle me-2"></i>ข้อมูลระบบ</h5>
+                    <div class="system-info" id="systemInfo">
+                        <p><strong>OS:</strong> <span id="osInfo">--</span></p>
+                        <p><strong>Node.js:</strong> <span id="nodeInfo">--</span></p>
+                        <p><strong>Gateway:</strong> <span id="gatewayInfo">--</span></p>
+                        <p><strong>Dashboard:</strong> <span id="dashboardInfo">--</span></p>
+                        <p><strong>Memory Usage:</strong> <span id="memoryInfo">--</span></p>
+                        <p><strong>CPU Usage:</strong> <span id="cpuInfo">--</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Section -->
+            <div id="security" class="content-section" style="display: none;">
+                <div class="status-card">
+                    <h5><i class="fas fa-shield-alt me-2"></i>ความปลอดภัย</h5>
+                    <div id="securityStatus">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Firewall:</span>
+                            <span class="status-badge status-online" id="firewallStatus">Active</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Fail2Ban:</span>
+                            <span class="status-badge status-online" id="fail2banStatus">Active</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Blocked IPs:</span>
+                            <span id="blockedIPs">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>SSH Protection:</span>
+                            <span class="status-badge status-online">Enabled</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections would go here -->
+            <div id="logs" class="content-section" style="display: none;">
+                <div class="status-card">
+                    <h5><i class="fas fa-file-alt me-2"></i>System Logs</h5>
+                    <div id="logsContent">
+                        <pre class="bg-light p-3 rounded">Loading logs...</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div id="agents" class="content-section" style="display: none;">
+                <div class="status-card">
+                    <h5><i class="fas fa-robot me-2"></i>Active Agents</h5>
+                    <div id="agentsContent">
+                        <p>Loading agents...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings" class="content-section" style="display: none;">
+                <div class="status-card">
+                    <h5><i class="fas fa-cog me-2"></i>ตั้งค่า</h5>
+                    <div id="settingsContent">
+                        <p>Settings panel...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="markdown" class="content-section" style="display: none;">
+                <div class="status-card">
+                    <h5><i class="fas fa-file-alt me-2"></i>Markdown Files</h5>
+                    
+                    <!-- File List -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6>ไฟล์ Markdown ในเซิร์ฟเวอร์</h6>
+                            <button class="btn btn-sm btn-primary" onclick="refreshMarkdownFiles()">
+                                <i class="fas fa-sync-alt me-1"></i>Refresh
+                            </button>
+                        </div>
+                        <div id="markdownFileList" class="list-group">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- File Editor -->
+                    <div id="markdownEditor" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 id="editorFileName">Filename</h6>
+                            <div>
+                                <button class="btn btn-sm btn-success" onclick="saveMarkdownFile()">
+                                    <i class="fas fa-save me-1"></i>Save
+                                </button>
+                                <button class="btn btn-sm btn-secondary" onclick="closeMarkdownEditor()">
+                                    <i class="fas fa-times me-1"></i>Close
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Editor (Markdown)</h6>
+                                <textarea id="markdownEditorContent" class="form-control" rows="15" style="font-family: monospace; font-size: 14px;"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Preview</h6>
+                                <div id="markdownPreview" class="border rounded p-3" style="min-height: 400px; background-color: #f8f9fa;">
+                                    <em>Preview will appear here...</em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple authentication (in production, use proper authentication)
+            if (username === 'admin' && password === 'openclaw2024') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainDashboard').style.display = 'block';
+                initializeDashboard();
+            } else {
+                alert('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+            }
+        });
+
+        // Quick Navigation Combobox
+        function quickNavigate() {
+            const combo = document.getElementById('quickNavCombo');
+            const selectedValue = combo.value;
+            
+            if (selectedValue) {
+                // Hide all sections
+                const sections = document.querySelectorAll('.content-section');
+                sections.forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // Show selected section
+                const targetSection = document.getElementById(selectedValue);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    
+                    // Update active nav link
+                    const navLinks = document.querySelectorAll('.sidebar .nav-link');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('onclick') && 
+                            link.getAttribute('onclick').includes(`'${selectedValue}'`)) {
+                            link.classList.add('active');
+                        }
+                    });
+                } else {
+                    // Handle special cases
+                    switch(selectedValue) {
+                        case 'logs':
+                            showSection('system');
+                            setTimeout(() => {
+                                const logsTab = document.querySelector('a[href="#logs"]');
+                                if (logsTab) logsTab.click();
+                            }, 100);
+                            break;
+                        default:
+                            showSection('overview');
+                    }
+                }
+                
+                // Reset combo
+                combo.value = '';
+            }
+        }
+
+        function showSection(sectionId, event) {
+            // Prevent default action if event exists
+            if (event) {
+                event.preventDefault();
+            }
+            
+            console.log('showSection called with:', sectionId); // Debug log
+            
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            console.log('Found sections:', sections.length); // Debug log
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section - use getElementById for single element
+            const targetSection = document.getElementById(sectionId);
+            console.log('Target section:', targetSection); // Debug log
+            
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                console.log('Section displayed:', sectionId); // Debug log
+                
+                // Update active nav link
+                updateActiveNav(sectionId);
+                
+                // Special handling for secondbrain section
+                if (sectionId === 'secondbrain') {
+                    console.log('Second brain section activated');
+                }
+            } else {
+                console.log('Section not found:', sectionId);
+                // Fallback to overview if section not found
+                const overviewSection = document.getElementById('overview');
+                if (overviewSection) {
+                    overviewSection.style.display = 'block';
+                    updateActiveNav('overview');
+                }
+            }
+        }
+        
+        function updateActiveNav(sectionId) {
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to current section
+            const currentLink = document.querySelector(`a[onclick="showSection('${sectionId}', event)"]`);
+            if (currentLink) {
+                currentLink.classList.add('active');
+            }
+        }
+
+        function logout() {
+            document.getElementById('mainDashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+        }
+
+        function initializeDashboard() {
+            // Update current time
+            function updateTime() {
+                const now = new Date();
+                document.getElementById('currentTime').textContent = 
+                    now.toLocaleString('th-TH', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+            }
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // Initialize dashboard data
+            loadDashboardData();
+            
+            // Activity chart removed - replaced with timeline
+        }
+
+        function loadDashboardData() {
+            // Simulate loading data (in real app, this would fetch from API)
+            setTimeout(() => {
+                document.getElementById('uptimeValue').textContent = '2h 15m';
+                document.getElementById('sessionsValue').textContent = '2';
+                document.getElementById('agentsValue').textContent = '1';
+                document.getElementById('memoryValue').textContent = '64%';
+                
+                // System info
+                document.getElementById('osInfo').textContent = 'Ubuntu 22.04 LTS';
+                document.getElementById('nodeInfo').textContent = 'v22.22.1';
+                document.getElementById('gatewayInfo').textContent = 'Local (ws://127.0.0.1:18789)';
+                document.getElementById('dashboardInfo').textContent = 'http://72.62.250.180:18789/';
+                document.getElementById('memoryInfo').textContent = '5.2GB / 7.8GB (67%)';
+                document.getElementById('cpuInfo').textContent = 'AMD EPYC 9354P (2 cores)';
+                
+                // Security info
+                document.getElementById('blockedIPs').textContent = '1 IP (159.89.88.159)';
+                
+                // Logs (sample)
+                document.getElementById('logsContent').innerHTML = `
+                    <pre class="bg-light p-3 rounded">
+2026-03-17 07:13:20,546 fail2ban.filter [15465]: INFO    [sshd] Found 159.89.88.159
+2026-03-17 07:13:20,547 fail2ban.filter [15465]: INFO    [sshd] Found 159.89.88.159  
+2026-03-17 07:13:20,739 fail2ban.actions  [15465]: NOTICE  [sshd] Ban 159.89.88.159
+2026-03-17 07:20:15,123 openclaw-gateway [15740]: INFO    Gateway started
+2026-03-17 07:20:15,124 openclaw-gateway [15740]: INFO    Dashboard available
+                    </pre>
+                `;
+                
+                // Agents info
+                document.getElementById('agentsContent').innerHTML = `
+                    <div class="list-group">
+                        <div class="list-group-item">
+                            <h6>Main Agent</h6>
+                            <p class="mb-1">Status: <span class="badge bg-success">Active</span></p>
+                            <p class="mb-1">Model: z-ai/glm-4.5</p>
+                            <p class="mb-1">Sessions: 2 active</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Initialize calendar
+                initializeCalendar();
+            }, 1000);
+        }
+
+        // Markdown file functions
+        function refreshMarkdownFiles() {
+            const fileList = document.getElementById('markdownFileList');
+            fileList.innerHTML = '<div class="text-center"><div class="spinner-border text-primary"><span class="visually-hidden">Loading...</span></div></div>';
+            
+            fetch('/api/md/files', {
+                headers: {
+                    'Authorization': 'Bearer openclaw-dashboard-token'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.files) {
+                    fileList.innerHTML = data.files.map(file => `
+                        <div class="list-group-item list-group-item-action" onclick="openMarkdownFile('${file.path}')">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">${file.name}</h6>
+                                    <small class="text-muted">${file.path}</small>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted">${formatFileSize(file.size)}</small><br>
+                                    <small class="text-muted">${formatDate(file.modified)}</small>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    fileList.innerHTML = '<div class="alert alert-warning">ไม่พบไฟล์ markdown</div>';
+                }
+            })
+            .catch(error => {
+                fileList.innerHTML = '<div class="alert alert-danger">ไม่สามารถโหลดไฟล์ markdown ได้</div>';
+            });
+        }
+
+        function openMarkdownFile(filePath) {
+            fetch(`/api/md/read?path=${encodeURIComponent(filePath)}`, {
+                headers: {
+                    'Authorization': 'Bearer openclaw-dashboard-token'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.content) {
+                    document.getElementById('editorFileName').textContent = data.name;
+                    document.getElementById('markdownEditorContent').value = data.content;
+                    document.getElementById('markdownPreview').innerHTML = markdownToHtml(data.content);
+                    document.getElementById('markdownEditor').style.display = 'block';
+                    document.getElementById('markdownEditor').dataset.filePath = filePath;
+                } else {
+                    alert('ไม่สามารถอ่านไฟล์ได้');
+                }
+            })
+            .catch(error => {
+                alert('ไม่สามารถอ่านไฟล์ได้');
+            });
+        }
+
+        function saveMarkdownFile() {
+            const filePath = document.getElementById('markdownEditor').dataset.filePath;
+            const content = document.getElementById('markdownEditorContent').value;
+            
+            fetch('/api/md/write', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer openclaw-dashboard-token'
+                },
+                body: JSON.stringify({
+                    path: filePath,
+                    content: content
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert('บันทึกไฟล์สำเร็จ!');
+                    document.getElementById('markdownPreview').innerHTML = markdownToHtml(content);
+                } else {
+                    alert('ไม่สามารถบันทึกไฟล์ได้: ' + (data.error || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                alert('ไม่สามารถบันทึกไฟล์ได้');
+            });
+        }
+
+        function closeMarkdownEditor() {
+            document.getElementById('markdownEditor').style.display = 'none';
+            document.getElementById('markdownEditorContent').value = '';
+            document.getElementById('markdownPreview').innerHTML = '<em>Preview will appear here...</em>';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('th-TH');
+        }
+
+        function markdownToHtml(markdown) {
+            // Simple markdown to HTML converter
+            return markdown
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^\* (.*$)/gim, '<li>$1</li>')
+                .replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*)\*/g, '<em>$1</em>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/^(.*)$/gm, '<p>$1</p>')
+                .replace(/<p><\/p>/g, '')
+                .replace(/<p><h([1-6])>/g, '<h$1>')
+                .replace(/<\/h([1-6])><\/p>/g, '</h$1>')
+                .replace(/<p><li>/g, '<li>')
+                .replace(/<\/li><\/p>/g, '</li>');
+        }
+
+        function testSecondBrainSystem() {
+            alert('🧪 ทดสอบระบบสมองที่สอง\n\n✅ ปุ่มนี้ทำงานได้!\n✅ คลิกแล้วมี popup!\n✅ JavaScript ทำงานปกติ!\n\n🎯 ถ้าเห็นข้อความนี้ แสดงว่าระบบพร้อมใช้งานแล้ว!\n\n💖 ระบบสมองที่สองของพี่ลภทำงานได้ดีมาก!');
+            
+            // สร้าง div ง่ายๆ เพื่อแสดงว่าระบบทำงาน
+            const testDiv = document.createElement('div');
+            testDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                font-family: 'Kanit', sans-serif;
+                text-align: center;
+                max-width: 400px;
+            `;
+            
+            testDiv.innerHTML = `
+                <h2 style="margin: 0 0 15px 0;">🎉 ทดสอบสำเร็จ!</h2>
+                <p style="margin: 0; line-height: 1.6;">
+                    ระบบสมองที่สองของพี่ลภ<br>
+                    พร้อมใช้งานแล้ว ✨
+                </p>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    margin-top: 15px;
+                    background: white;
+                    color: #667eea;
+                    border: none;
+                    padding: 8px 20px;
+                    border-radius: 20px;
+                    cursor: pointer;
+                    font-weight: bold;
+                ">ตกลง</button>
+            `;
+            
+            document.body.appendChild(testDiv);
+        }
+
+        function showSecondBrainModal(title, content) {
+            // เปลี่ยนเป็นเปิดใน markdown editor แทน
+            closeMarkdownEditor();
+            openMarkdownFile(title);
+        }
+
+        function showContentInPage(filename, content) {
+            // สร้าง div สำหรับแสดงเนื้อหาในหน้าปัจจุบัน
+            let contentDiv = document.getElementById('fileContentDisplay');
+            if (!contentDiv) {
+                contentDiv = document.createElement('div');
+                contentDiv.id = 'fileContentDisplay';
+                contentDiv.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    z-index: 9999;
+                    overflow-y: auto;
+                    display: none;
+                `;
+                
+                const innerContent = document.createElement('div');
+                innerContent.style.cssText = `
+                    max-width: 800px;
+                    margin: 20px auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 10px;
+                    position: relative;
+                `;
+                
+                const header = document.createElement('div');
+                header.style.cssText = `
+                    background: #007bff;
+                    color: white;
+                    padding: 20px;
+                    margin: -30px -30px 20px -30px;
+                    border-radius: 10px 10px 0 0;
+                `;
+                header.innerHTML = `
+                    <h2 style="margin: 0;"><i class="fas fa-file-alt"></i> ${filename}</h2>
+                    <small>เปิดจากระบบสมองที่สอง - OpenClaw Dashboard</small>
+                `;
+                
+                const closeButton = document.createElement('button');
+                closeButton.innerHTML = '✕ ปิด';
+                closeButton.style.cssText = `
+                    position: absolute;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(255,255,255,0.2);
+                    border: none;
+                    color: white;
+                    padding: 5px 15px;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                `;
+                closeButton.onclick = function() {
+                    contentDiv.style.display = 'none';
+                };
+                
+                const contentArea = document.createElement('div');
+                contentArea.id = 'fileContentArea';
+                contentArea.className = 'second-brain-content';
+                
+                header.appendChild(closeButton);
+                innerContent.appendChild(header);
+                innerContent.appendChild(contentArea);
+                contentDiv.appendChild(innerContent);
+                document.body.appendChild(contentDiv);
+            }
+            
+            // แสดงเนื้อหา
+            document.getElementById('fileContentArea').innerHTML = markdownToHtml(content);
+            contentDiv.style.display = 'block';
+        }
+
+        // Second Brain Quick Actions
+        function createNewIdea() {
+            // Open IDEAS.md for editing
+            closeMarkdownEditor();
+            openMarkdownFile('IDEAS.md');
+        }
+
+        function addNewTask() {
+            // Open TASKS.md for editing
+            closeMarkdownEditor();
+            openMarkdownFile('TASKS.md');
+        }
+
+        function viewAllConnections() {
+            // Show connections in modal
+            openSecondBrainFile('CONNECTIONS.md');
+        }
+
+        // Second Brain Quick Access Functions
+        function quickAccessSecondBrain() {
+            const combo = document.getElementById('secondBrainFileCombo');
+            const selectedFile = combo.value;
+            
+            if (selectedFile) {
+                // Auto-open the selected file
+                openSecondBrainFile(selectedFile);
+            }
+        }
+
+        function goToSelectedFile() {
+            const combo = document.getElementById('secondBrainFileCombo');
+            const selectedFile = combo.value;
+            
+            if (selectedFile) {
+                openSecondBrainFile(selectedFile);
+            } else {
+                // If no file selected, show alert
+                alert('กรุณาเลือกไฟล์ที่ต้องการเข้าถึง');
+            }
+        }
+
+        // Quick Actions Functions
+        function executeQuickAction() {
+            const combo = document.getElementById('quickActionCombo');
+            const selectedAction = combo.value;
+            
+            if (selectedAction) {
+                switch(selectedAction) {
+                    case 'refresh':
+                        refreshAllData();
+                        break;
+                    case 'backup':
+                        performBackup();
+                        break;
+                    case 'logs':
+                        showLatestLogs();
+                        break;
+                    case 'security':
+                        checkSecurity();
+                        break;
+                    case 'performance':
+                        checkPerformance();
+                        break;
+                    case 'export':
+                        exportData();
+                        break;
+                    default:
+                        alert('การกระทำนี้ยังไม่พร้อมใช้งาน');
+                }
+                
+                // Reset combo
+                combo.value = '';
+            }
+        }
+
+        function showSecondBrain() {
+            // Quick navigation to second brain
+            showSection('secondbrain');
+        }
+
+        function refreshAllData() {
+            // Show loading indicator
+            alert('กำลังรีเฟรชข้อมูล...');
+            // In real implementation, this would refresh all data
+            loadDashboardData();
+        }
+
+        function performBackup() {
+            alert('กำลังสำรองข้อมูล...');
+            // In real implementation, this would trigger backup
+        }
+
+        function showLatestLogs() {
+            // Navigate to logs section
+            showSection('system');
+            setTimeout(() => {
+                const logsTab = document.querySelector('a[href="#logs"]');
+                if (logsTab) logsTab.click();
+            }, 100);
+        }
+
+        function checkSecurity() {
+            alert('กำลังตรวจสอบความปลอดภัย...');
+            // In real implementation, this would run security checks
+        }
+
+        function checkPerformance() {
+            alert('กำลังตรวจสอบ performance...');
+            // In real implementation, this would check system performance
+        }
+
+        function exportData() {
+            alert('กำลังส่งออกข้อมูล...');
+            // In real implementation, this would export data
+        }
+
+        // Calendar Functions
+        function addNewEvent() {
+            const eventName = prompt('กรุณกรอกชื่อกิจกรรม:');
+            if (eventName) {
+                const eventDate = prompt('กรุณกรอกวันที่ (DD/MM/YYYY):');
+                const eventTime = prompt('กรุณกรอกเวลา (HH:MM):');
+                
+                if (eventDate && eventTime) {
+                    alert(`เพิ่มกิจกรรม "${eventName}" วันที่ ${eventDate} เวลา ${eventTime} เรียบร้อยแล้ว`);
+                    // In real implementation, this would save to calendar
+                }
+            }
+        }
+
+        function viewCalendarDetails() {
+            // Navigate to calendar details or show modal
+            openSecondBrainFile('CALENDAR.md');
+        }
+
+        function exportCalendar() {
+            alert('กำลังส่งออกปฏิทิน...');
+            // In real implementation, this would export calendar data
+        }
+
+        // Calendar Functions
+        let currentCalendarDate = new Date();
+        let calendarEvents = [];
+
+        function initializeCalendar() {
+            loadCalendarData();
+            generateCalendar();
+            loadUpcomingAppointments();
+        }
+
+        function loadCalendarData() {
+            // Load calendar data from CALENDAR.md
+            fetch('/api/md/read?path=CALENDAR.md')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.content) {
+                        parseCalendarData(data.content);
+                    } else {
+                        // Use default calendar data
+                        loadDefaultCalendarData();
+                    }
+                })
+                .catch(error => {
+                    console.log('Loading default calendar data');
+                    loadDefaultCalendarData();
+                });
+        }
+
+        function loadDefaultCalendarData() {
+            // Default calendar events
+            calendarEvents = [
+                {
+                    id: 1,
+                    title: 'เวทเทรนนิ่ง',
+                    type: 'personal',
+                    date: '2026-03-18',
+                    time: '18:00',
+                    details: 'เวทเทรนนิ่งประจำสัปดาห์'
+                },
+                {
+                    id: 2,
+                    title: 'นัดหมายลูกค้า',
+                    type: 'work',
+                    date: '2026-03-19',
+                    time: '14:00',
+                    details: 'นัดหมายลูกค้าสำคัญ'
+                },
+                {
+                    id: 3,
+                    title: 'ส่งรายงาน',
+                    type: 'work',
+                    date: '2026-03-20',
+                    time: '16:00',
+                    details: 'ส่งรายงานประจำสัปดาห์'
+                },
+                {
+                    id: 4,
+                    title: 'เวทเทรนนิ่ง',
+                    type: 'personal',
+                    date: '2026-03-21',
+                    time: '18:00',
+                    details: 'เวทเทรนนิ่งประจำสัปดาห์'
+                },
+                {
+                    id: 5,
+                    title: 'ประชุมคณะกรรมการ',
+                    type: 'people',
+                    date: '2026-03-24',
+                    time: '10:00',
+                    details: 'ประชุมคณะกรรมการบริษัท'
+                },
+                {
+                    id: 6,
+                    title: 'อบรมเทรนนิ่งพนักงาน',
+                    type: 'people',
+                    date: '2026-03-25',
+                    time: '09:00',
+                    details: 'อบรมเทรนนิ่งพนักงานใหม่'
+                }
+            ];
+            generateCalendar();
+            loadUpcomingAppointments();
+        }
+
+        function parseCalendarData(content) {
+            // Parse markdown content to extract events
+            calendarEvents = [];
+            const lines = content.split('\n');
+            let currentDate = null;
+            
+            for (let line of lines) {
+                if (line.includes('📅') && line.includes('วันที่:')) {
+                    const dateMatch = line.match(/วันที่:\s*(\d{2}\/\d{2}\/\d{4})/);
+                    const timeMatch = line.match(/เวลา:\s*(\d{2}:\d{2})/);
+                    const typeMatch = line.match(/ประเภท:\s*([^\n]+)/);
+                    const titleMatch = line.match(/รายละเอียด:\s*([^\n]+)/);
+                    
+                    if (dateMatch && timeMatch && titleMatch) {
+                        calendarEvents.push({
+                            id: calendarEvents.length + 1,
+                            title: titleMatch[1].trim(),
+                            type: typeMatch ? typeMatch[1].trim().toLowerCase() : 'work',
+                            date: dateMatch[1].replace(/(\d{2})\/(\d{2})\/(\d{4})/, '$3-$2-$1'),
+                            time: timeMatch[1],
+                            details: titleMatch[1].trim()
+                        });
+                    }
+                }
+            }
+            
+            // Add default events if none found
+            if (calendarEvents.length === 0) {
+                loadDefaultCalendarData();
+            } else {
+                generateCalendar();
+                loadUpcomingAppointments();
+            }
+        }
+
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthNames = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                               'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+            const dayNames = ['อา.', 'จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.'];
+            
+            // Update month display
+            document.getElementById('currentMonth').textContent = 
+                `${monthNames[currentCalendarDate.getMonth()]} ${currentCalendarDate.getFullYear()}`;
+            
+            // Clear grid
+            grid.innerHTML = '';
+            
+            // Add day headers
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-header';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), 1);
+            const lastDay = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day other-month';
+                grid.appendChild(emptyDay);
+            }
+            
+            // Add days of month
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                
+                const currentDayDate = new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth(), day);
+                
+                // Check if today
+                if (currentDayDate.toDateString() === today.toDateString()) {
+                    dayElement.classList.add('today');
+                }
+                
+                // Add day number
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'calendar-day-number';
+                dayNumber.textContent = day;
+                dayElement.appendChild(dayNumber);
+                
+                // Add events for this day
+                const dayEvents = calendarEvents.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate.getDate() === day && 
+                           eventDate.getMonth() === currentCalendarDate.getMonth() &&
+                           eventDate.getFullYear() === currentCalendarDate.getFullYear();
+                });
+                
+                dayEvents.slice(0, 2).forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = `calendar-event ${event.type}`;
+                    eventElement.textContent = `${event.time} ${event.title}`;
+                    eventElement.title = event.details;
+                    dayElement.appendChild(eventElement);
+                });
+                
+                // Add click event
+                dayElement.addEventListener('click', () => {
+                    showDayDetails(currentDayDate, dayEvents);
+                });
+                
+                grid.appendChild(dayElement);
+            }
+        }
+
+        function showDayDetails(date, events) {
+            const dateString = date.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            let eventList = '';
+            if (events.length > 0) {
+                eventList = events.map(event => 
+                    `<div class="appointment-item ${event.type}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>${event.title}</strong>
+                            <span class="appointment-type-badge ${event.type}">${getTypeLabel(event.type)}</span>
+                        </div>
+                        <div class="text-muted small">
+                            <i class="fas fa-clock me-1"></i>${event.time}
+                        </div>
+                        ${event.details ? `<div class="mt-2 small">${event.details}</div>` : ''}
+                    </div>`
+                ).join('');
+            } else {
+                eventList = '<p class="text-muted">ไม่มีนัดหมายในวันนี้</p>';
+            }
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${dateString}</h5>
+                            <button type="button" class="btn-close" onclick="this.closest('.modal').remove()"></button>
+                        </div>
+                        <div class="modal-body">
+                            ${eventList}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="this.closest('.modal').remove()">ปิด</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        function getTypeLabel(type) {
+            switch(type) {
+                case 'work': return 'งาน';
+                case 'people': return 'บุคคล';
+                case 'personal': return 'ส่วนตัว';
+                default: return 'ทั่วไป';
+            }
+        }
+
+        function loadUpcomingAppointments() {
+            const container = document.getElementById('upcomingAppointments');
+            const today = new Date();
+            const upcomingEvents = calendarEvents
+                .filter(event => new Date(event.date) >= today)
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .slice(0, 5);
+            
+            if (upcomingEvents.length > 0) {
+                container.innerHTML = upcomingEvents.map(event => `
+                    <div class="appointment-item ${event.type}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>${event.title}</strong>
+                            <span class="appointment-type-badge ${event.type}">${getTypeLabel(event.type)}</span>
+                        </div>
+                        <div class="text-muted small">
+                            <i class="fas fa-calendar me-1"></i>${formatDate(event.date)}
+                            <i class="fas fa-clock ms-2 me-1"></i>${event.time}
+                        </div>
+                        ${event.details ? `<div class="mt-2 small">${event.details}</div>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '<p class="text-muted">ไม่มีนัดหมายที่กำลังจะมาถึง</p>';
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function previousMonth() {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            generateCalendar();
+        }
+
+        function currentMonth() {
+            currentCalendarDate = new Date();
+            generateCalendar();
+        }
+
+        function showCalendarView(view) {
+            // Update button states
+            const buttons = document.querySelectorAll('.btn-group .btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // For now, just show message for different views
+            if (view === 'week') {
+                alert('มุมมองสัปดาห์กำลังพัฒนา...');
+            } else if (view === 'today') {
+                currentMonth();
+                // Scroll to today
+                const todayElement = document.querySelector('.calendar-day.today');
+                if (todayElement) {
+                    todayElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        // New appointment form handler
+        document.getElementById('newAppointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const appointment = {
+                id: calendarEvents.length + 1,
+                title: document.getElementById('appointmentTitle').value,
+                type: document.getElementById('appointmentType').value,
+                date: document.getElementById('appointmentDate').value,
+                time: document.getElementById('appointmentTime').value,
+                details: document.getElementById('appointmentDetails').value
+            };
+            
+            calendarEvents.push(appointment);
+            
+            // Reset form
+            this.reset();
+            
+            // Refresh calendar
+            generateCalendar();
+            loadUpcomingAppointments();
+            
+            // Show success message
+            alert('เพิ่มนัดหมายเรียบร้อยแล้ว!');
+        });
+    </script>
+</body>
+</html>

@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
+const session = require('express-session');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = 3000;
@@ -10,18 +12,103 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.static('.'));
 
+// Session middleware
+app.use(session({
+    secret: 'openclaw-dashboard-secret-key-2024',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        secure: false, // Set to true if using HTTPS
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
 // Authentication middleware
-const authMiddleware = (req, res, next) => {
-    // Simple token-based auth (in production, use proper JWT/session)
-    const authHeader = req.headers.authorization;
-    if (!authHeader || authHeader !== 'Bearer openclaw-dashboard-token') {
-        return res.status(401).json({ error: 'Unauthorized' });
+const requireAuth = (req, res, next) => {
+    if (!req.session.isAuthenticated) {
+        return res.status(401).json({ error: 'Not authenticated' });
     }
     next();
 };
 
-// Markdown files API
-app.get('/api/md/files', authMiddleware, (req, res) => {
+// API Authentication middleware
+const apiAuthMiddleware = (req, res, next) => {
+    if (!req.session.isAuthenticated) {
+        return res.status(401).json({ error: 'Not authenticated' });
+    }
+    next();
+};
+
+// Serve login page
+app.get('/', (req, res) => {
+    if (req.session.isAuthenticated) {
+        res.sendFile(path.join(__dirname, 'dashboard.html'));
+    } else {
+        res.sendFile(path.join(__dirname, 'login.html'));
+    }
+});
+
+// Login endpoint
+app.post('/api/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        // Simple authentication (in production, use database)
+        if (username === 'admin' && password === 'openclaw2024') {
+            req.session.isAuthenticated = true;
+            req.session.user = { username: 'admin', role: 'admin' };
+            
+            res.json({ 
+                success: true, 
+                message: 'Login successful',
+                user: { username: 'admin', role: 'admin' }
+            });
+        } else {
+            res.status(401).json({ 
+                success: false, 
+                message: 'Invalid username or password' 
+            });
+        }
+    } catch (error) {
+        res.status(500).json({ 
+            success: false, 
+            message: 'Login failed' 
+        });
+    }
+});
+
+// Logout endpoint
+app.post('/api/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            res.status(500).json({ success: false, message: 'Logout failed' });
+        } else {
+            res.json({ success: true, message: 'Logout successful' });
+        }
+    });
+});
+
+// Check auth status
+app.get('/api/auth-status', (req, res) => {
+    if (req.session.isAuthenticated) {
+        res.json({ 
+            authenticated: true, 
+            user: req.session.user 
+        });
+    } else {
+        res.json({ 
+            authenticated: false 
+        });
+    }
+});
+
+// Protect dashboard routes
+app.get('/dashboard.html', requireAuth, (req, res) => {
+    res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
+
+// Protect API routes
+app.get('/api/md/files', apiAuthMiddleware, (req, res) => {
     try {
         const workspaceDir = '/root/.openclaw/workspace';
         const files = [];
@@ -53,7 +140,7 @@ app.get('/api/md/files', authMiddleware, (req, res) => {
     }
 });
 
-app.get('/api/md/read', authMiddleware, (req, res) => {
+app.get('/api/md/read', apiAuthMiddleware, (req, res) => {
     try {
         const filePath = req.query.path;
         if (!filePath) {
@@ -95,7 +182,7 @@ app.get('/api/md/read', authMiddleware, (req, res) => {
     }
 });
 
-app.post('/api/md/write', authMiddleware, (req, res) => {
+app.post('/api/md/write', apiAuthMiddleware, (req, res) => {
     try {
         const { path: filePath, content } = req.body;
         
@@ -128,134 +215,33 @@ app.post('/api/md/write', authMiddleware, (req, res) => {
             name: path.basename(fullPath),
             size: stats.size,
             modified: stats.mtime,
-            timestamp: new Date().toISOString(),
-            message: 'File saved successfully'
+            timestamp: new Date().toISOString()
         });
     } catch (error) {
         res.status(500).json({ error: 'Failed to write markdown file' });
     }
 });
 
-// Routes
-app.get('/', (req, res) => {
-    const dashboardPath = '/root/.openclaw/workspace/dashboard.html';
-    
-    console.log('Trying to serve:', dashboardPath);
-    console.log('File exists:', fs.existsSync(dashboardPath));
-    
-    if (fs.existsSync(dashboardPath)) {
-        // Read file and send as HTML
-        fs.readFile(dashboardPath, 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading file:', err);
-                res.status(500).send('Error reading dashboard file');
-            } else {
-                res.setHeader('Content-Type', 'text/html; charset=utf-8');
-                res.send(data);
-            }
-        });
-    } else {
-        console.error('Dashboard file not found:', dashboardPath);
-        res.status(404).send('Dashboard file not found');
-    }
-});
-
-// API Routes for dashboard data
-app.get('/api/status', authMiddleware, (req, res) => {
+// System info endpoint
+app.get('/api/system/info', apiAuthMiddleware, (req, res) => {
     try {
-        // Get OpenClaw status
-        try {
-            const statusOutput = execSync('openclaw status', { encoding: 'utf8' });
-            const uptimeOutput = execSync('uptime', { encoding: 'utf8' });
-            const memoryOutput = execSync('free -h', { encoding: 'utf8' });
-            
-            res.json({
-                openclaw: parseOpenClawStatus(statusOutput),
-                system: {
-                    uptime: uptimeOutput.trim(),
-                    memory: memoryOutput.trim()
-                },
-                timestamp: new Date().toISOString()
-            });
-        } catch (error) {
-            res.json({
-                error: 'Failed to get system status',
-                timestamp: new Date().toISOString()
-            });
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
-
-app.get('/api/security', authMiddleware, (req, res) => {
-    try {
-        const firewallStatus = execSync('/usr/sbin/ufw status', { encoding: 'utf8' });
-        const fail2banStatus = execSync('fail2ban-client status', { encoding: 'utf8' });
+        const cpuInfo = execSync('cat /proc/cpuinfo | grep "model name" | head -1 | cut -d: -f2', { encoding: 'utf8' }).trim();
+        const memInfo = execSync('free -m | grep Mem | awk \'{print $2" "$3" "$4}\'', { encoding: 'utf8' }).trim().split(' ');
+        const diskInfo = execSync('df -h / | awk \'NR==2{print $2" "$3" "$4" "$5}\'', { encoding: 'utf8' }).trim().split(' ');
         
         res.json({
-            firewall: firewallStatus.includes('Status: active'),
-            fail2ban: fail2banStatus.includes('Status: active'),
-            timestamp: new Date().toISOString()
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to get security status' });
-    }
-});
-
-app.get('/api/logs', authMiddleware, (req, res) => {
-    try {
-        const logs = [];
-        
-        // Get Fail2Ban logs if available
-        try {
-            const fail2banLogs = execSync('tail -20 /var/log/fail2ban.log 2>/dev/null || echo "No logs found"', { encoding: 'utf8' });
-            logs.push({
-                source: 'fail2ban',
-                content: fail2banLogs.trim()
-            });
-        } catch (e) {
-            logs.push({
-                source: 'fail2ban',
-                content: 'No logs available'
-            });
-        }
-        
-        // Get auth logs
-        try {
-            const authLogs = execSync('tail -20 /var/log/auth.log 2>/dev/null || echo "No logs found"', { encoding: 'utf8' });
-            logs.push({
-                source: 'auth',
-                content: authLogs.trim()
-            });
-        } catch (e) {
-            logs.push({
-                source: 'auth',
-                content: 'No logs available'
-            });
-        }
-        
-        res.json({
-            logs: logs,
-            timestamp: new Date().toISOString()
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to get logs' });
-    }
-});
-
-app.get('/api/system/info', authMiddleware, (req, res) => {
-    try {
-        const osInfo = execSync('uname -a', { encoding: 'utf8' });
-        const cpuInfo = execSync('lscpu', { encoding: 'utf8' });
-        const nodeVersion = execSync('node --version', { encoding: 'utf8' });
-        const gitVersion = execSync('git --version', { encoding: 'utf8' });
-        
-        res.json({
-            os: osInfo.trim(),
             cpu: cpuInfo,
-            node: nodeVersion.trim(),
-            git: gitVersion.trim(),
+            memory: {
+                total: parseInt(memInfo[0]),
+                used: parseInt(memInfo[1]),
+                free: parseInt(memInfo[2])
+            },
+            disk: {
+                total: diskInfo[0],
+                used: diskInfo[1],
+                free: diskInfo[2],
+                usage: diskInfo[3]
+            },
             timestamp: new Date().toISOString()
         });
     } catch (error) {
@@ -263,50 +249,7 @@ app.get('/api/system/info', authMiddleware, (req, res) => {
     }
 });
 
-// Helper function to parse OpenClaw status
-function parseOpenClawStatus(statusOutput) {
-    const lines = statusOutput.split('\n');
-    const status = {
-        gateway: 'Unknown',
-        dashboard: 'Unknown',
-        agents: 'Unknown',
-        sessions: 'Unknown',
-        memory: 'Unknown'
-    };
-    
-    lines.forEach(line => {
-        if (line.includes('Gateway')) {
-            status.gateway = line.includes('unreachable') ? 'Unreachable' : 'Online';
-        }
-        if (line.includes('Dashboard')) {
-            const match = line.match(/Dashboard:\s*(.+)/);
-            if (match) status.dashboard = match[1].trim();
-        }
-        if (line.includes('Agents')) {
-            const match = line.match(/Agents:\s*(.+)/);
-            if (match) status.agents = match[1].trim();
-        }
-        if (line.includes('Sessions')) {
-            const match = line.match(/Sessions:\s*(.+)/);
-            if (match) status.sessions = match[1].trim();
-        }
-        if (line.includes('Memory')) {
-            const match = line.match(/Memory:\s*(.+)/);
-            if (match) status.memory = match[1].trim();
-        }
-    });
-    
-    return status;
-}
-
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 OpenClaw Dashboard running on port ${PORT}`);
-    console.log(`📊 Access: http://localhost:${PORT}`);
-    console.log(`🔐 Default login: admin / openclaw2024`);
-});
-
-// Error handling
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something went wrong!' });
@@ -315,4 +258,10 @@ app.use((err, req, res, next) => {
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({ error: 'Not found' });
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 OpenClaw Dashboard running on port ${PORT}`);
+    console.log(`📊 Access: http://localhost:${PORT}`);
+    console.log(`🔐 Default login: admin / openclaw2024`);
 });

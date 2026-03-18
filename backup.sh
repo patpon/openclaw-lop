@@ -18,7 +18,7 @@ git add . >> $LOG_FILE 2>&1
 git commit -m "Daily backup - $(date '+%Y-%m-%d %H:%M:%S')" >> $LOG_FILE 2>&1
 
 # Push to GitHub
-git push origin main >> $LOG_FILE 2>&1
+git push origin master >> $LOG_FILE 2>&1
 
 echo "Backup completed at $(date)" >> $LOG_FILE
 echo "---" >> $LOG_FILE

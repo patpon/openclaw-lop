@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดสอบ Navigation หลังแก้ไข</title>
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .test-result {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .success {
+            border-left: 5px solid #28a745;
+        }
+        .error {
+            border-left: 5px solid #dc3545;
+        }
+        .info {
+            border-left: 5px solid #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 ทดสอบ Navigation หลังแก้ไข</h1>
+    
+    <div class="test-result info">
+        <h3>📋 สิ่งที่แก้ไข:</h3>
+        <ul>
+            <li>✅ แก้ไขปัญหา ID ซ้ำกันใน HTML</li>
+            <li>✅ เปลี่ยน <code>id="calendar"</code> ซ้ำเป็น <code>id="calendar-summary"</code> และ <code>id="calendar-detail"</code></li>
+            <li>✅ ปรับปรุงฟังก์ชั่น <code>showSection()</code> ให้ใช้ <code>getElementById()</code> ที่ถูกต้อง</li>
+            <li>✅ เพิ่ม Debug logging ใน console</li>
+        </ul>
+    </div>
+
+    <div class="test-result success">
+        <h3>🎯 วิธีทดสอบ:</h3>
+        <ol>
+            <li>เปิด Dashboard: <strong>https://ajpatpon.cloud</strong></li>
+            <li>Login: <strong>admin / openclaw2024</strong></li>
+            <li>เปิด Developer Console (F12)</li>
+            <li>คลิกเมนู "🧠 สมองที่สอง"</li>
+            <li>ดู Console ว่ามี log ปรากฏหรือไม่</li>
+            <li>คลิกเมนู "📅 ปฏิทิน"</li>
+            <li>ตรวจสอบว่าหน้าไม่ว่างเปล่า</li>
+        </ol>
+    </div>
+
+    <div class="test-result success">
+        <h3>🔍 ที่ควรเห็นใน Console:</h3>
+        <pre>showSection called with: secondbrain
+Found sections: [จำนวน]
+Target section: [object HTMLDivElement]
+Section displayed: secondbrain
+Second brain section activated</pre>
+    </div>
+
+    <div class="test-result info">
+        <h3>💡 ถ้ายังไม่ได้:</h3>
+        <ul>
+            <li>ตรวจสอบ Console ว่ามี error หรือไม่</li>
+            <li>ลอง Refresh หน้าเว็บ (Ctrl+R)</li>
+            <li>ลอง Clear Cache (Ctrl+Shift+R)</li>
+            <li>ตรวจสอบว่าเมนูคลิกแล้ว console.log ขึ้นไหม</li>
+        </ul>
+    </div>
+
+    <div class="test-result success">
+        <h3>🚀 สถานะปัจจุบัน:</h3>
+        <p><strong>Service:</strong> ทำงานปกติ (active/running)</p>
+        <p><strong>Dashboard:</strong> เข้าถึงได้ (HTTP 200)</p>
+        <p><strong>Navigation:</strong> ID ซ้ำได้รับการแก้ไขแล้ว</p>
+    </div>
+
+    <div class="test-result error">
+        <h3>⚠️ ปัญหาที่อาจยังคงอยู่:</h3>
+        <ul>
+            <li>Browser cache เก่า - ลอง Clear cache</li>
+            <li>JavaScript error อื่นๆ - ตรวจสอบ console</li>
+            <li>Service ยังไม่ restart ใหม่ - รอ 1-2 นาที</li>
+        </ul>
+    </div>
+</body>
+</html>

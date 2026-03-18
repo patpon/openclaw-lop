@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Navigation Test - น้องแก้วใส</title>
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .nav-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .content-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #667eea;
+        }
+        .content-section.active {
+            display: block !important;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .status {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+        .success {
+            background: #e8f5e8;
+            border-left-color: #4caf50;
+        }
+        .error {
+            background: #ffebee;
+            border-left-color: #f44336;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Simple Navigation Test - น้องแก้วใส (GLM-5)</h1>
+    
+    <div class="status">
+        <h3>📋 วิธีทดสอบ:</h3>
+        <p>1. กดปุ่มด้านล่างทีละปุ่ม</p>
+        <p>2. ดูว่าข้อมูลปรากฏหรือไม่</p>
+        <p>3. ถ้าได้ แสดงว่า navigation ทำงาน</p>
+    </div>
+    
+    <div style="text-align: center; margin: 30px 0;">
+        <button class="nav-button" onclick="showSection('overview')">
+            🏠 Overview
+        </button>
+        <button class="nav-button" onclick="showSection('secondbrain')">
+            🧠 สมองที่สอง
+        </button>
+        <button class="nav-button" onclick="showSection('calendar')">
+            📅 ปฏิทิน
+        </button>
+        <button class="nav-button" onclick="showSection('system')">
+            ⚙️ ระบบ
+        </button>
+    </div>
+    
+    <!-- Overview Section -->
+    <div id="overview" class="content-section">
+        <h2>🏠 Overview</h2>
+        <div class="card">
+            <h4>📊 สถานะระบบ</h4>
+            <p>ระบบ OpenClaw ทำงานปกติ</p>
+            <ul>
+                <li>✅ Gateway: ทำงาน</li>
+                <li>✅ Services: ทำงาน</li>
+                <li>✅ Dashboard: พร้อมใช้งาน</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Second Brain Section -->
+    <div id="secondbrain" class="content-section">
+        <h2>🧠 ระบบสมองที่สอง</h2>
+        <div class="card">
+            <h4>💡 ไอเดีย</h4>
+            <p>คลังไอเดียสำหรับโปรเจคต์ต่างๆ</p>
+            <button class="nav-button" onclick="testAlert()">🧪 ทดสอบระบบ</button>
+        </div>
+        <div class="card">
+            <h4>📚 ความรู้</h4>
+            <p>สะสมความรู้และประสบการณ์</p>
+            <p><em>ตัวอย่าง: การเขียนโค้ด, การออกแบบ, การจัดการ</em></p>
+        </div>
+        <div class="card">
+            <h4>📝 งาน</h4>
+            <p>รายการงานที่ต้องทำ</p>
+            <p><em>ตัวอย่าง: แก้ไขเว็บ, ทดสอบระบบ, อัพเกรด</em></p>
+        </div>
+        <div class="card">
+            <h4>🔗 การเชื่อมโยง</h4>
+            <p>เชื่อมโยงความคิดและแนวคิด</p>
+            <p><em>ตัวอย่าง: ไอเดีย + ความรู้ + งาน</em></p>
+        </div>
+    </div>
+    
+    <!-- Calendar Section -->
+    <div id="calendar" class="content-section">
+        <h2>📅 ปฏิทินนัดหมาย</h2>
+        <div class="card">
+            <h4>📋 นัดหมายประจำสัปดาห์</h4>
+            <div class="status success">
+                <p><strong>พรุ่งนี้ (19 มี.ค. 2026):</strong></p>
+                <p>🕒 18:00 - เวทเทรนนิ่งประจำสัปดาห์</p>
+            </div>
+            <div class="status">
+                <p><strong>สัปดาห์หน้า:</strong></p>
+                <p>🕒 18:00 - เวทเทรนนิ่ง (วันอังคาร)</p>
+                <p>🕒 18:00 - เวทเทรนนิ่ง (วันพฤหัสบดี)</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- System Section -->
+    <div id="system" class="content-section">
+        <h2>⚙️ ระบบ</h2>
+        <div class="card">
+            <h4>🖥️ Server Status</h4>
+            <ul>
+                <li>✅ CPU: ทำงานปกติ</li>
+                <li>✅ Memory: พอเพียง</li>
+                <li>✅ Disk: มีพื้นที่ว่าง</li>
+                <li>✅ Network: เชื่อมต่อดี</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h4>🔧 Services</h4>
+            <ul>
+                <li>✅ OpenClaw Gateway</li>
+                <li>✅ Dashboard Service</li>
+                <li>✅ Nginx Reverse Proxy</li>
+                <li>✅ SSL Certificate</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div id="test-result"></div>
+    
+    <script>
+        function showSection(sectionId) {
+            console.log('showSection called with:', sectionId);
+            
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            console.log('Found sections:', sections.length);
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            console.log('Target section:', targetSection);
+            
+            if (targetSection) {
+                targetSection.classList.add('active');
+                console.log('Section displayed:', sectionId);
+                
+                // Update result
+                const result = document.getElementById('test-result');
+                result.innerHTML = `
+                    <div class="status success">
+                        <h4>✅ สำเร็จ!</h4>
+                        <p>แสดงหน้า <strong>${sectionId}</strong> ได้สำเร็จ</p>
+                        <p>Console log: ดูที่ Developer Console (F12)</p>
+                    </div>
+                `;
+                
+                // Scroll to section
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.log('Section not found:', sectionId);
+                const result = document.getElementById('test-result');
+                result.innerHTML = `
+                    <div class="status error">
+                        <h4>❌ ไม่พบหน้านี้</h4>
+                        <p>ไม่พบ section: <strong>${sectionId}</strong></p>
+                    </div>
+                `;
+            }
+        }
+        
+        function testAlert() {
+            alert('🧪 ทดสอบระบบสมองที่สอง\n\n✅ ปุ่มนี้ทำงานได้!\n✅ JavaScript ทำงานปกติ!\n✅ ระบบพร้อมใช้งานแล้ว!');
+        }
+        
+        // Auto-test on load
+        window.onload = function() {
+            console.log('🚀 Simple Navigation Test loaded');
+            console.log('📋 ทดสอบ: กดปุ่มด้านบนเพื่อดูว่า navigation ทำงานไหม');
+        };
+    </script>
+</body>
+</html>
