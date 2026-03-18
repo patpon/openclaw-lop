@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ทดสอบระบบสมองที่สอง</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Kanit', sans-serif;
+            padding: 20px;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .test-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .test-content {
+            padding: 30px;
+        }
+        .test-card {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .test-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1><i class="fas fa-brain me-3"></i>ทดสอบระบบสมองที่สอง</h1>
+            <p>เวอร์ชันทดสอบ - ตรวจสอบการทำงานของ JavaScript</p>
+        </div>
+        
+        <div class="test-content">
+            <h3>🧪 คลิกเพื่อทดสอบระบบ:</h3>
+            
+            <div class="test-card" onclick="testAlert()">
+                <h5><i class="fas fa-exclamation-circle text-warning me-2"></i>ทดสอบ Alert</h5>
+                <p class="mb-0">คลิกเพื่อดูว่า JavaScript alert ทำงานไหม</p>
+            </div>
+            
+            <div class="test-card" onclick="testDiv()">
+                <h5><i class="fas fa-plus-square text-success me-2"></i>ทดสอบการสร้าง Div</h5>
+                <p class="mb-0">คลิกเพื่อดูว่าการสร้าง element ทำงานไหม</p>
+            </div>
+            
+            <div class="test-card" onclick="testAll()">
+                <h5><i class="fas fa-check-double text-primary me-2"></i>ทดสอบทั้งหมด</h5>
+                <p class="mb-0">คลิกเพื่อทดสอบฟังก์ชั่นทั้งหมดในระบบ</p>
+            </div>
+            
+            <div class="test-card" onclick="testAPI()">
+                <h5><i class="fas fa-cloud text-info me-2"></i>ทดสอบ API</h5>
+                <p class="mb-0">คลิกเพื่อดูว่า API ทำงานไหม</p>
+            </div>
+            
+            <div id="testResult" class="test-result"></div>
+        </div>
+    </div>
+
+    <script>
+        function testAlert() {
+            const result = document.getElementById('testResult');
+            try {
+                alert('✅ Alert ทำงานได้!\n\nJavaScript พร้อมใช้งานแล้ว');
+                result.innerHTML = '<i class="fas fa-check-circle me-2"></i>✅ Alert ทำงานได้ปกติ';
+                result.style.display = 'block';
+                result.style.background = '#d4edda';
+                result.style.borderColor = '#c3e6cb';
+                result.style.color = '#155724';
+            } catch (error) {
+                result.innerHTML = '<i class="fas fa-times-circle me-2"></i>❌ Alert ทำงานไม่ได้: ' + error.message;
+                result.style.display = 'block';
+                result.style.background = '#f8d7da';
+                result.style.borderColor = '#f5c6cb';
+                result.style.color = '#721c24';
+            }
+        }
+        
+        function testDiv() {
+            const result = document.getElementById('testResult');
+            try {
+                const testDiv = document.createElement('div');
+                testDiv.innerHTML = '<h3>🎉 สร้าง Div สำเร็จ!</h3><p>การสร้าง element ทำงานได้ปกติ</p>';
+                testDiv.style.cssText = 'background: #e7f3ff; padding: 15px; border-radius: 5px; margin: 10px 0;';
+                result.parentNode.insertBefore(testDiv, result);
+                result.innerHTML = '<i class="fas fa-check-circle me-2"></i>✅ การสร้าง Div ทำงานได้ปกติ';
+                result.style.display = 'block';
+                result.style.background = '#d4edda';
+                result.style.borderColor = '#c3e6cb';
+                result.style.color = '#155724';
+            } catch (error) {
+                result.innerHTML = '<i class="fas fa-times-circle me-2"></i>❌ การสร้าง Div ทำงานไม่ได้: ' + error.message;
+                result.style.display = 'block';
+                result.style.background = '#f8d7da';
+                result.style.borderColor = '#f5c6cb';
+                result.style.color = '#721c24';
+            }
+        }
+        
+        function testAll() {
+            const result = document.getElementById('testResult');
+            try {
+                // ทดสอบหลายอย่าง
+                alert('🧪 เริ่มทดสอบระบบทั้งหมด...');
+                
+                const testDiv = document.createElement('div');
+                testDiv.innerHTML = `
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; text-align: center;">
+                        <h2>🎉 ทดสอบสำเร็จ!</h2>
+                        <p>ระบบสมองที่สองพร้อมใช้งานแล้ว</p>
+                        <button onclick="this.parentElement.parentElement.remove()" style="background: white; color: #667eea; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">ตกลง</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(testDiv);
+                
+                result.innerHTML = '<i class="fas fa-check-circle me-2"></i>✅ การทดสอบทั้งหมดสำเร็จ! ระบบพร้อมใช้งาน';
+                result.style.display = 'block';
+                result.style.background = '#d4edda';
+                result.style.borderColor = '#c3e6cb';
+                result.style.color = '#155724';
+            } catch (error) {
+                result.innerHTML = '<i class="fas fa-times-circle me-2"></i>❌ การทดสอบทั้งหมดล้มเหลว: ' + error.message;
+                result.style.display = 'block';
+                result.style.background = '#f8d7da';
+                result.style.borderColor = '#f5c6cb';
+                result.style.color = '#721c24';
+            }
+        }
+        
+        function testAPI() {
+            const result = document.getElementById('testResult');
+            try {
+                // ทดสอบ fetch API
+                fetch('/api/md/read?path=IDEAS.md', {
+                    headers: {
+                        'Authorization': 'Bearer openclaw-dashboard-token'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.content) {
+                        result.innerHTML = '<i class="fas fa-check-circle me-2"></i>✅ API ทำงานได้! ไฟล์มีข้อมูล: ' + data.size + ' bytes';
+                        result.style.display = 'block';
+                        result.style.background = '#d4edda';
+                        result.style.borderColor = '#c3e6cb';
+                        result.style.color = '#155724';
+                    } else {
+                        throw new Error('ไม่พบข้อมูลในไฟล์');
+                    }
+                })
+                .catch(error => {
+                    result.innerHTML = '<i class="fas fa-times-circle me-2"></i>❌ API ทำงานไม่ได้: ' + error.message;
+                    result.style.display = 'block';
+                    result.style.background = '#f8d7da';
+                    result.style.borderColor = '#f5c6cb';
+                    result.style.color = '#721c24';
+                });
+            } catch (error) {
+                result.innerHTML = '<i class="fas fa-times-circle me-2"></i>❌ การทดสอบ API ล้มเหลว: ' + error.message;
+                result.style.display = 'block';
+                result.style.background = '#f8d7da';
+                result.style.borderColor = '#f5c6cb';
+                result.style.color = '#721c24';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Test - OpenClaw Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Kanit', sans-serif;
+            padding: 20px;
+        }
+        .test-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .calendar-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="test-container">
+            <div class="text-center mb-4">
+                <h1><i class="fas fa-calendar-alt me-3 text-primary"></i>ระบบปฏิทินใหม่!</h1>
+                <p class="lead text-muted">ปฏิทินนัดหมายและกิจกรรมที่สวยงามและใช้งานง่าย</p>
+            </div>
+
+            <div class="feature-card">
+                <h2><i class="fas fa-check-circle me-2"></i>พร้อมใช้งานแล้ว!</h2>
+                <p>ระบบปฏิทินใหม่ได้ถูกเพิ่มเข้าไปใน Dashboard ของคุณแล้ว</p>
+            </div>
+
+            <div class="calendar-features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-grid"></i>
+                    </div>
+                    <h5>ปฏิทินเดือน</h5>
+                    <p class="text-muted">ดูนัดหมายทั้งหมดในรูปแบบปฏิทินเดือน</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h5>เพิ่มนัดหมาย</h5>
+                    <p class="text-muted">สร้างนัดหมายใหม่ได้อย่างง่ายดาย</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h5>นัดหมายที่จะมาถึง</h5>
+                    <p class="text-muted">ดูนัดหมายที่กำลังจะมาถึงได้ทันที</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h5>ประเภทกิจกรรม</h5>
+                    <p class="text-muted">จัดหมวดหมู่นัดหมายตามประเภท</p>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4><i class="fas fa-star me-2 text-warning"></i>คุณสมบัติพิเศษ</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>📅 ปฏิทินเดือนสวยงาม</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>🎯 3 ประเภทกิจกรรม (งาน, บุคคล, ส่วนตัว)</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>⏰ การแจ้งเตือนล่วงหน้า</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>📱 Responsive Design</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>🎨 สีสันสวยงาม</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>🖱️ คลิกดูรายละเอียด</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h4><i class="fas fa-info-circle me-2 text-info"></i>วิธีการใช้งาน</h4>
+                    <ol>
+                        <li><strong>เข้า Dashboard:</strong> <a href="https://ajpatpon.cloud" target="_blank">https://ajpatpon.cloud</a></li>
+                        <li><strong>Login:</strong> admin / openclaw2024</li>
+                        <li><strong>คลิกเมนู:</strong> "📅 ปฏิทิน" ใน sidebar</li>
+                        <li><strong>ดูปฏิทิน:</strong> ดูนัดหมายทั้งหมดในปฏิทิน</li>
+                        <li><strong>คลิกวันที่:</strong> ดูรายละเอียดนัดหมายในวันนั้น</li>
+                        <li><strong>เพิ่มนัดหมาย:</strong> กรอกฟอร์มด้านล่าง</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="https://ajpatpon.cloud" class="btn btn-primary btn-lg" target="_blank">
+                    <i class="fas fa-external-link-alt me-2"></i>เปิด Dashboard ตอนนี้!
+                </a>
+            </div>
+
+            <div class="mt-4 p-3 bg-light rounded">
+                <h6><i class="fas fa-lightbulb me-2 text-warning"></i>นัดหมายตัวอย่างที่ถูกเพิ่มไว้:</h6>
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="alert alert-info">
+                            <strong>🧘‍♀️ เวทเทรนนิ่ง</strong><br>
+                            <small>18 มี.ค. 2026 เวลา 18:00 น.</small>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="alert alert-danger">
+                            <strong>📋 นัดหมายลูกค้า</strong><br>
+                            <small>19 มี.ค. 2026 เวลา 14:00 น.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
