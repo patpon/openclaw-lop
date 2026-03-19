@@ -2,8 +2,9 @@
   "team_name": "ทีมแก้วใส",
   "team_en": "KaewSai Team",
   "created_at": "2026-03-18T14:10:00Z",
-  "version": "1.0.0",
-  "description": "AI Team of 6 female agents who love kindness, each other, their leader Nong Kaew Sai, and health wellness",
+  "updated_at": "2026-03-19T14:12:00Z",
+  "version": "1.1.0",
+  "description": "AI Team of 7 female agents who love kindness, each other, their leader Nong Kaew Sai, health wellness, and merit-making",
   "leader": "น้องแก้วใส",
   "members": [
     {
@@ -13,7 +14,7 @@
       "folder": "main"
     },
     {
-      "name": "น้องดวงสว่าง",
+      "name": "น้องจักรแก้ว",
       "role": "research-specialist", 
       "description": "Research & Data Specialist",
       "folder": "nong-duang-sawang"
@@ -41,6 +42,12 @@
       "role": "health-wellness-specialist",
       "description": "Health & Wellness Specialist",
       "folder": "nong-boonraksa"
+    },
+    {
+      "name": "น้องขุนคลังแก้ว",
+      "role": "financial-advisor",
+      "description": "Financial Advisor & Investment Specialist",
+      "folder": "nong-khun-klang-kaew"
     }
   ],
   "team_values": [
@@ -48,7 +55,8 @@
     "teamwork",
     "respect-for-leader",
     "merit-making",
-    "female-solidarity"
+    "female-solidarity",
+    "financial-wisdom"
   ],
   "working_style": {
     "coordination": "leader-coordinated",
@@ -61,9 +69,11 @@
     "research_tasks": "น้องดวงสว่าง", 
     "technical_tasks": "น้องกายสิทธิ์",
     "creative_tasks": "น้องรัตนชาติ",
+    "health_wellness": "น้องบุญรักษา",
+    "financial_planning": "น้องขุนคลังแก้ว",
     "coordination": "น้องแก้วใส"
   },
   "team_motto": "รักบุญ รักกัน รักพี่แก้วใส",
-  "team_colors": ["pink", "light_blue", "white", "gold"],
+  "team_colors": ["pink", "light_blue", "white", "gold", "green"],
   "team_symbol": "crystal_heart"
 }

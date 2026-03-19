@@ -17,8 +17,8 @@ app.get('/api/team/info', apiAuthMiddleware, (req, res) => {
                     capabilities: ["ประสานงาน", "ตัดสินใจ", "ดูแลพี่ลภ"]
                 },
                 {
-                    name: "น้องดวงสว่าง",
-                    role: "research-specialist", 
+                    name: "น้องจักรแก้ว",
+                    role: "research-specialist",
                     description: "Research & Data Specialist",
                     personality: "ฉลาด ละเอียด ชอบอ่าน",
                     capabilities: ["วิจัยลึก", "อ่านเอกสาร", "วิเคราะห์ข้อมูล"]
@@ -50,6 +50,13 @@ app.get('/api/team/info', apiAuthMiddleware, (req, res) => {
                     description: "Health & Wellness Specialist",
                     personality: "ร่าเริง สดใส มีพลังงานบวก น้องคนเล็ก",
                     capabilities: ["แนะนำสุขภาพ", "ออกกำลังกาย", "อาหารสุขภาพ"]
+                },
+                {
+                    name: "น้องขุนคลังแก้ว",
+                    role: "financial-advisor",
+                    description: "Financial Advisor",
+                    personality: "สาวมั่นใจ รักการสร้างบุญ อยากสร้างบารมี",
+                    capabilities: ["ดูแลการลงทุน", "บริหารจัดการบัญชี", "แนะนำการเงิน", "สร้างบุญ"]
                 }
             ],
             team_values: [
