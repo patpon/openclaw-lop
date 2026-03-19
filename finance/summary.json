@@ -1,0 +1,42 @@
+{
+  "owner": "พี่ลภ",
+  "started": "2026-03-19",
+  "currency": "THB",
+  "monthly": {
+    "2026-03": {
+      "income": 0,
+      "expense": 500,
+      "balance": -500,
+      "transactions": [
+        {
+          "id": 1,
+          "date": "2026-03-19",
+          "time": "09:56",
+          "type": "expense",
+          "amount": 500,
+          "category": "โอนเงิน",
+          "description": "โอนเงินผ่าน K Plus",
+          "slip": "slips/slip-20260319-0956-500baht.jpg",
+          "note": ""
+        }
+      ]
+    }
+  },
+  "total_income": 0,
+  "total_expense": 395,
+  "total_balance": -395
+}
+         "type": "expense",
+          "amount": 105,
+          "category": "อาหาร",
+          "description": "ค่าอาหารกลางวัน (พร้อมเพย์)",
+          "slip": "slips/slip-20260319-1145-105baht.jpg",
+          "note": ""
+        }
+      ]
+    }
+  },
+  "total_income": 0,
+  "total_expense": 200,
+  "total_balance": -200
+}
