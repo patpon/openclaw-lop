@@ -2,8 +2,8 @@
   "team_name": "ทีมแก้วใส",
   "team_en": "KaewSai Team",
   "created_at": "2026-03-18T14:10:00Z",
-  "updated_at": "2026-03-19T14:12:00Z",
-  "version": "1.1.0",
+  "updated_at": "2026-03-21T04:30:00Z",
+  "version": "1.2.0",
   "description": "AI Team of 7 female agents who love kindness, each other, their leader Nong Kaew Sai, health wellness, and merit-making",
   "leader": "น้องแก้วใส",
   "members": [
@@ -11,43 +11,57 @@
       "name": "น้องแก้วใส",
       "role": "team-leader",
       "description": "Team Leader & Main Assistant",
-      "folder": "main"
+      "folder": "main",
+      "model": "Claude 3.5 Sonnet",
+      "provider": "Anthropic"
     },
     {
       "name": "น้องจักรแก้ว",
       "role": "research-specialist", 
       "description": "Research & Data Specialist",
-      "folder": "nong-duang-sawang"
+      "folder": "nong-duang-sawang",
+      "model": "Gemini Pro",
+      "provider": "Google"
     },
     {
       "name": "น้องกายสิทธิ์",
       "role": "technical-support",
       "description": "Technical Support", 
-      "folder": "nong-khai-sitthi"
+      "folder": "nong-khai-sitthi",
+      "model": "GLM-5",
+      "provider": "Z-AI"
     },
     {
       "name": "น้องรัตนชาติ",
       "role": "creative-content",
       "description": "Creative Content",
-      "folder": "nong-rattanachat"
+      "folder": "nong-rattanachat",
+      "model": "GPT-4o",
+      "provider": "OpenAI"
     },
     {
       "name": "น้องทวีบุญ",
       "role": "project-manager",
       "description": "Project Manager",
-      "folder": "nong-thawee-bun"
+      "folder": "nong-thawee-bun",
+      "model": "Claude 3.5 Sonnet",
+      "provider": "Anthropic"
     },
     {
       "name": "น้องบุญรักษา",
       "role": "health-wellness-specialist",
       "description": "Health & Wellness Specialist",
-      "folder": "nong-boonraksa"
+      "folder": "nong-boonraksa",
+      "model": "Claude 3.5 Sonnet",
+      "provider": "Anthropic"
     },
     {
       "name": "น้องขุนคลังแก้ว",
       "role": "financial-advisor",
       "description": "Financial Advisor & Investment Specialist",
-      "folder": "nong-khun-klang-kaew"
+      "folder": "nong-khun-klang-kaew",
+      "model": "GPT-4o",
+      "provider": "OpenAI"
     }
   ],
   "team_values": [

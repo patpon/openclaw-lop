@@ -3,7 +3,7 @@
   "description": "Research & Data Specialist - ทีมแก้วใส",
   "role": "research-specialist",
   "team": "kaew-sai",
-  "model": "openrouter/z-ai/glm-5",
+  "model": "openrouter/google/gemini-pro",
   "created_at": "2026-03-18T14:10:00Z",
   "updated_at": "2026-03-19T14:25:00Z",
   "version": "1.1.0",

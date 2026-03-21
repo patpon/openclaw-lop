@@ -107,10 +107,13 @@
                 'น้องกายสิทธิ์': '#6bcf7f',
                 'น้องรัตนชาติ': '#4d9de0',
                 'น้องทวีบุญ': '#e15554',
-                'น้องบุญรักษา': '#f783ac'
+                'น้องบุญรักษา': '#f783ac',
+                'น้องขุนคลังแก้ว': '#ffd700'
             };
 
             const color = avatarColors[member.name] || '#6c757d';
+            const model = member.model || 'N/A';
+            const provider = member.provider || 'N/A';
             
             return `
                 <div class="col-md-6 col-lg-4">
@@ -126,7 +129,12 @@
                             <span class="role-badge">${member.description}</span>
                             <p class="card-text mt-2">
                                 <small class="text-muted">
-                                    <i class="fas fa-heart"></i> ${member.personality}
+                                    <i class="fas fa-microchip"></i> ${model}
+                                </small>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-server"></i> ${provider}
                                 </small>
                             </p>
                             <div class="mt-3">

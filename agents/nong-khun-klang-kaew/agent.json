@@ -3,7 +3,7 @@
   "description": "Financial Advisor - ทีมแก้วใส",
   "role": "financial-advisor",
   "team": "kaew-sai",
-  "model": "openrouter/z-ai/glm-5",
+  "model": "openrouter/openai/gpt-4o",
   "created_at": "2026-03-19T14:12:00Z",
   "version": "1.0.0",
   "capabilities": [
