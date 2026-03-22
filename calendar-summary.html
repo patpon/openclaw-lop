@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar Summary - OpenClaw Dashboard</title>
+    <title>ปฏิทินนัดหมาย - OpenClaw Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -20,8 +20,17 @@
             margin-bottom: 20px;
         }
         .today-highlight {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
             color: white;
+        }
+        .dhamma-event {
+            border-left: 4px solid #28a745;
+        }
+        .health-event {
+            border-left: 4px solid #dc3545;
+        }
+        .blood-event {
+            border-left: 4px solid #fd7e14;
         }
         .stat-card {
             text-align: center;
@@ -34,6 +43,9 @@
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
         }
+        .event-row:hover {
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 <body>
@@ -44,9 +56,9 @@
                 <div class="col">
                     <h1 class="mb-0">
                         <i class="fas fa-calendar-alt text-primary me-2"></i>
-                        สรุปปฏิทินนัดหมาย
+                        ปฏิทินนัดหมาย
                     </h1>
-                    <p class="text-muted mb-0">OpenClaw Dashboard - 17 มี.ค. 2026</p>
+                    <p class="text-muted mb-0">OpenClaw Dashboard - อัพเดท: 21 มี.ค. 2026</p>
                 </div>
                 <div class="col-auto">
                     <a href="https://ajpatpon.cloud" class="btn btn-primary">
@@ -56,31 +68,28 @@
             </div>
         </div>
 
-        <!-- Today's Events -->
+        <!-- Today's Date -->
         <div class="calendar-card p-4 today-highlight">
             <h4 class="mb-3">
-                <i class="fas fa-star me-2"></i>วันนี้ (17 มี.ค. 2026)
+                <i class="fas fa-star me-2"></i>วันนี้ - เสาร์ 21 มีนาคม 2026
             </h4>
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex align-items-center p-3 bg-white bg-opacity-20 rounded">
-                        <i class="fas fa-clock fa-2x me-3"></i>
+                        <i class="fas fa-spa fa-2x me-3"></i>
                         <div>
-                            <h5 class="mb-1">เวทเทรนนิ่งประจำสัปดาห์</h5>
-                            <p class="mb-0">เวลา: 18:00 น. | ประเภท: ประจำ | สถานที่: Zoom/Online</p>
-                        </div>
-                        <div class="ms-auto">
-                            <span class="badge bg-danger badge-custom">วันนี้!</span>
+                            <h5 class="mb-1">วันหยุดสุดสัปดาห์</h5>
+                            <p class="mb-0">พักผ่อนและทำบุญ 🙏</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- This Week -->
+        <!-- Upcoming Events -->
         <div class="calendar-card p-4">
             <h4 class="mb-3">
-                <i class="fas fa-calendar-week me-2"></i>สัปดาห์นี้
+                <i class="fas fa-clock me-2 text-warning"></i>นัดหมายที่ใกล้จะถึง
             </h4>
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -89,78 +98,150 @@
                             <th>วันที่</th>
                             <th>เวลา</th>
                             <th>กิจกรรม</th>
+                            <th>สถานที่</th>
                             <th>ประเภท</th>
-                            <th>ความสำคัญ</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>18 มี.ค.</strong></td>
-                            <td>18:00</td>
-                            <td>เวทเทรนนิ่ง</td>
-                            <td><span class="badge bg-success">ประจำ</span></td>
-                            <td><i class="fas fa-star text-warning"></i></td>
+                        <!-- ปฏิบัติบูชารอบ 3 -->
+                        <tr class="event-row dhamma-event">
+                            <td><strong>พฤ 26 มี.ค.</strong></td>
+                            <td>14:00-16:00</td>
+                            <td>
+                                <i class="fas fa-spa text-success me-2"></i>
+                                ปฏิบัติบูชารอบ 3
+                            </td>
+                            <td>ห้อง SPD7 วัดพระธรรมกาย</td>
+                            <td><span class="badge bg-success">ธรรมะ</span></td>
                         </tr>
-                        <tr>
-                            <td><strong>19 มี.ค.</strong></td>
-                            <td>14:00</td>
-                            <td>นัดหมายลูกค้า</td>
-                            <td><span class="badge bg-primary">งาน</span></td>
-                            <td><i class="fas fa-circle text-info"></i></td>
+                        <!-- ปฏิบัติบูชารอบ 4 -->
+                        <tr class="event-row dhamma-event">
+                            <td><strong>พฤ 2 เม.ย.</strong></td>
+                            <td>14:00-16:00</td>
+                            <td>
+                                <i class="fas fa-spa text-success me-2"></i>
+                                ปฏิบัติบูชารอบ 4
+                            </td>
+                            <td>ห้อง SPD7 วัดพระธรรมกาย</td>
+                            <td><span class="badge bg-success">ธรรมะ</span></td>
                         </tr>
-                        <tr>
-                            <td><strong>20 มี.ค.</strong></td>
-                            <td>10:00</td>
-                            <td>ส่งรายงานประจำสัปดาห์</td>
-                            <td><span class="badge bg-warning">งาน</span></td>
-                            <td><i class="fas fa-exclamation text-danger"></i></td>
+                        <!-- ปฏิบัติบูชารอบ 5 -->
+                        <tr class="event-row dhamma-event">
+                            <td><strong>พฤ 9 เม.ย.</strong></td>
+                            <td>14:00-16:00</td>
+                            <td>
+                                <i class="fas fa-spa text-success me-2"></i>
+                                ปฏิบัติบูชารอบ 5
+                            </td>
+                            <td>ห้อง SPD7 วัดพระธรรมกาย</td>
+                            <td><span class="badge bg-success">ธรรมะ</span></td>
                         </tr>
-                        <tr>
-                            <td><strong>21 มี.ค.</strong></td>
-                            <td>18:00</td>
-                            <td>เวทเทรนนิ่ง</td>
-                            <td><span class="badge bg-success">ประจำ</span></td>
-                            <td><i class="fas fa-star text-warning"></i></td>
+                        <!-- บริจาคเลือด -->
+                        <tr class="event-row blood-event">
+                            <td><strong>ศ 19 มิ.ย.</strong></td>
+                            <td>-</td>
+                            <td>
+                                <i class="fas fa-tint text-danger me-2"></i>
+                                บริจาคเลือด
+                            </td>
+                            <td>-</td>
+                            <td><span class="badge bg-warning">บุญ</span></td>
+                        </tr>
+                        <!-- ผ่าตัดไทรอยด์ -->
+                        <tr class="event-row health-event">
+                            <td><strong>อ 30 มิ.ย.</strong></td>
+                            <td>-</td>
+                            <td>
+                                <i class="fas fa-hospital text-danger me-2"></i>
+                                ผ่าตัดไทรอยด์
+                            </td>
+                            <td>-</td>
+                            <td><span class="badge bg-danger">สุขภาพ</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Statistics -->
+        <!-- ปฏิบัติบูชา 82 ปี -->
         <div class="calendar-card p-4">
             <h4 class="mb-3">
-                <i class="fas fa-chart-pie me-2"></i>สถิติสัปดาห์นี้
+                <i class="fas fa-spa me-2 text-success"></i>ปฏิบัติบูชา 82 ปี หลวงพ่อธัมมชโย
             </h4>
+            <div class="alert alert-success" role="alert">
+                <h6 class="alert-heading">
+                    <i class="fas fa-map-marker-alt me-2"></i>ห้อง SPD7 สภาธรรมกายสากล วัดพระธรรมกาย
+                </h6>
+                <p class="mb-1"><strong>เวลา:</strong> 14:00-16:00 น.</p>
+                <p class="mb-1"><strong>วิทยากร:</strong> ป้าใส เกษมสุข ภมรสถิตย์</p>
+                <hr>
+                <p class="mb-0"><strong>คติ:</strong> "รักบุญ รักกัน รักพี่แก้วใส" 💖</p>
+            </div>
             <div class="row">
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <h2 class="text-primary mb-1">4</h2>
-                        <small class="text-muted">กิจกรรมทั้งหมด</small>
+                <div class="col-md-4 mb-2">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h5>รอบ 3</h5>
+                            <p class="mb-0">พฤ 26 มี.ค. 2026</p>
+                            <span class="badge bg-success">ลงทะเบียนแล้ว</span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <h2 class="text-success mb-1">2</h2>
-                        <small class="text-muted">เวทเทรนนิ่ง</small>
+                <div class="col-md-4 mb-2">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h5>รอบ 4</h5>
+                            <p class="mb-0">พฤ 2 เม.ย. 2026</p>
+                            <span class="badge bg-success">ลงทะเบียนแล้ว</span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <h2 class="text-warning mb-1">1</h2>
-                        <small class="text-muted">สำคัญมาก</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="stat-card">
-                        <h2 class="text-info mb-1">1</h2>
-                        <small class="text-muted">งานทั่วไป</small>
+                <div class="col-md-4 mb-2">
+                    <div class="card bg-light">
+                        <div class="card-body text-center">
+                            <h5>รอบ 5</h5>
+                            <p class="mb-0">พฤ 9 เม.ย. 2026</p>
+                            <span class="badge bg-success">ลงทะเบียนแล้ว</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Alerts -->
+        <!-- Statistics -->
+        <div class="calendar-card p-4">
+            <h4 class="mb-3">
+                <i class="fas fa-chart-pie me-2"></i>สถิตินัดหมาย
+            </h4>
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <h2 class="text-primary mb-1">5 <small style="font-size: 0.5em;">นัด</small></h2>
+                        <small class="text-muted">นัดหมายทั้งหมด</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <h2 class="text-success mb-1">3 <small style="font-size: 0.5em;">รายการ</small></h2>
+                        <small class="text-muted">ธรรมะ</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <h2 class="text-warning mb-1">1 <small style="font-size: 0.5em;">ครั้ง</small></h2>
+                        <small class="text-muted">บริจาคเลือด</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <h2 class="text-danger mb-1">1 <small style="font-size: 0.5em;">รายการ</small></h2>
+                        <small class="text-muted">สุขภาพ</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reminders -->
         <div class="calendar-card p-4">
             <h4 class="mb-3">
                 <i class="fas fa-bell me-2"></i>การแจ้งเตือน
@@ -168,39 +249,22 @@
             <div class="alert alert-warning d-flex align-items-center" role="alert">
                 <i class="fas fa-exclamation-triangle me-2"></i>
                 <div>
-                    <strong>เวทเทรนนิ่งวันนี้!</strong><br>
-                    <small>เวลา 18:00 น. อย่าลืมเตรียมตัว</small>
+                    <strong>ปฏิบัติบูชารอบ 3</strong><br>
+                    <small>พฤ 26 มี.ค. - เตรียมเสื้อผ้าสีขาว/สีอ่อน มาก่อน 15-30 นาที</small>
                 </div>
             </div>
             <div class="alert alert-info d-flex align-items-center" role="alert">
                 <i class="fas fa-info-circle me-2"></i>
                 <div>
-                    <strong>ส่งรายงานพรุ่งนี้</strong><br>
-                    <small>เวลา 10:00 น. เตรียมข้อมูลให้พร้อม</small>
+                    <strong>บริจาคเลือด</strong><br>
+                    <small>ศ 19 มิ.ย. - พักผ่อนให้เพียงพอก่อนบริจาค</small>
                 </div>
             </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="calendar-card p-4">
-            <h4 class="mb-3">
-                <i class="fas fa-bolt me-2"></i>การกระทำด่วน
-            </h4>
-            <div class="row g-3">
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-outline-primary w-100" onclick="alert('เพิ่มนัดหมายใหม่')">
-                        <i class="fas fa-plus me-2"></i>เพิ่มนัดหมายใหม่
-                    </button>
-                </div>
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-outline-success w-100" onclick="window.open('https://ajpatpon.cloud/api/md/read?path=CALENDAR.md', '_blank')">
-                        <i class="fas fa-eye me-2"></i>ดูรายละเอียดทั้งหมด
-                    </button>
-                </div>
-                <div class="col-12 col-md-4">
-                    <button class="btn btn-outline-info w-100" onclick="alert('ส่งออกปฏิทิน')">
-                        <i class="fas fa-download me-2"></i>ส่งออกปฏิทิน
-                    </button>
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="fas fa-hospital me-2"></i>
+                <div>
+                    <strong>ผ่าตัดไทรอยด์</strong><br>
+                    <small>อ 30 มิ.ย. - เตรียมตัวก่อนผ่าตัดตามคำแนะนำแพทย์</small>
                 </div>
             </div>
         </div>
@@ -208,8 +272,8 @@
         <!-- Footer -->
         <div class="text-center text-white mt-4">
             <small>
-                <i class="fas fa-paw me-1"></i>
-                OpenClaw Dashboard - อัพเดทล่าสุด: 17 มี.ค. 2026 14:30 น.
+                <i class="fas fa-gem me-1"></i>
+                น้องแก้วใส - อัพเดทล่าสุด: 21 มี.ค. 2026 15:06 น.
             </small>
         </div>
     </div>

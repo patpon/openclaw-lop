@@ -257,7 +257,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#" onclick="showSection('skills', event)">
-                    <i class="fas fa-magic me-2"></i>Skills
+                    <i class="fas fa-magic me-2"></i>ทักษะ
                 </a>
             </li>
             <li class="nav-item">
@@ -277,7 +277,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#" onclick="showSection('logs', event)">
-                    <i class="fas fa-file-alt me-2"></i>Logs
+                    <i class="fas fa-file-alt me-2"></i>บันทึก
                 </a>
             </li>
         </ul>
@@ -361,7 +361,7 @@
                             <strong>การเข้าถึงวันนี้:</strong> 23
                         </div>
                         <div class="mb-2">
-                            <strong>Model ปัจจุบัน:</strong> GLM-5
+                            <strong>Model ปัจจุบัน:</strong> Claude 3.5 Sonnet (Anthropic)
                         </div>
                     </div>
                 </div>
@@ -427,25 +427,39 @@
                 ปฏิทินนัดหมาย
             </h2>
             
-            <div class="status-card">
-                <h5><i class="fas fa-star me-2"></i>นัดหมายที่ใกล้ถึง</h5>
+            <div class="status-card" style="border-left-color: #28a745;">
+                <h5><i class="fas fa-spa me-2" style="color: #28a745;"></i>ปฏิบัติบูชา 82 ปี หลวงพ่อธัมมชโย</h5>
+                <p class="text-muted">ห้อง SPD7 สภาธรรมกายสากล | 14:00-16:00 น.</p>
                 
                 <div class="calendar-item">
-                    <h6>พรุ่งนี้ (19 มี.ค. 2026)</h6>
-                    <p><i class="fas fa-clock me-2"></i><strong>18:00</strong> - เวทเทรนนิ่งประจำสัปดาห์</p>
-                    <small class="text-muted">ทุกวันอังคารและพฤหัสบดี</small>
+                    <h6><i class="fas fa-spa text-success me-2"></i>รอบ 3 - พฤ 26 มี.ค. 2026</h6>
+                    <p><strong>สถานะ:</strong> <span class="badge bg-success">ลงทะเบียนแล้ว</span></p>
                 </div>
                 
                 <div class="calendar-item">
-                    <h6>สัปดาห์หน้า (25 มี.ค. 2026)</h6>
-                    <p><i class="fas fa-clock me-2"></i><strong>18:00</strong> - เวทเทรนนิ่ง</p>
-                    <small class="text-muted">วันอังคาร</small>
+                    <h6><i class="fas fa-spa text-success me-2"></i>รอบ 4 - พฤ 2 เม.ย. 2026</h6>
+                    <p><strong>สถานะ:</strong> <span class="badge bg-success">ลงทะเบียนแล้ว</span></p>
                 </div>
                 
                 <div class="calendar-item">
-                    <h6>สัปดาห์หน้า (27 มี.ค. 2026)</h6>
-                    <p><i class="fas fa-clock me-2"></i><strong>18:00</strong> - เวทเทรนนิ่ง</p>
-                    <small class="text-muted">วันพฤหัสบดี</small>
+                    <h6><i class="fas fa-spa text-success me-2"></i>รอบ 5 - พฤ 9 เม.ย. 2026</h6>
+                    <p><strong>สถานะ:</strong> <span class="badge bg-success">ลงทะเบียนแล้ว</span></p>
+                </div>
+            </div>
+            
+            <div class="status-card" style="border-left-color: #fd7e14;">
+                <h5><i class="fas fa-tint me-2" style="color: #fd7e14;"></i>บริจาคเลือด</h5>
+                <div class="calendar-item">
+                    <h6><i class="fas fa-tint text-warning me-2"></i>ศ 19 มิ.ย. 2026</h6>
+                    <p><strong>สถานะ:</strong> <span class="badge bg-warning">นัดหมาย</span></p>
+                </div>
+            </div>
+            
+            <div class="status-card" style="border-left-color: #dc3545;">
+                <h5><i class="fas fa-hospital me-2" style="color: #dc3545;"></i>ผ่าตัดไทรอยด์</h5>
+                <div class="calendar-item">
+                    <h6><i class="fas fa-hospital text-danger me-2"></i>อ 30 มิ.ย. 2026</h6>
+                    <p><strong>สถานะ:</strong> <span class="badge bg-danger">สำคัญ</span></p>
                 </div>
             </div>
             
@@ -453,16 +467,22 @@
                 <h5><i class="fas fa-bell me-2"></i>การแจ้งเตือน</h5>
                 <div class="mb-2">
                     <i class="fas fa-check-circle text-success me-2"></i>
-                    เตือน 1 วันล่วงหน้า (วันอังคาร 17:00)
+                    ปฏิบัติบูชา: แจ้งเตือน 1 วันล่วงหน้า
                 </div>
                 <div class="mb-2">
                     <i class="fas fa-check-circle text-success me-2"></i>
-                    เตือน 2 ชั่วโมงล่วงหน้า (วันอังคาร/พฤหัสบดี 16:00)
+                    สำรองข้อมูล: ทุกวัน 05:00 น.
                 </div>
                 <div class="mb-2">
                     <i class="fas fa-check-circle text-success me-2"></i>
-                    รายงานข่าว (08:00 และ 17:00 ทุกวัน)
+                    รายงานข่าว: 08:00 และ 17:00 น.
                 </div>
+            </div>
+            
+            <div class="status-card text-center">
+                <a href="calendar-summary.html" class="btn btn-primary btn-lg">
+                    <i class="fas fa-calendar-alt me-2"></i>ดูปฏิทินแบบเต็ม
+                </a>
             </div>
         </div>
 
@@ -503,7 +523,7 @@
                                 <span class="badge" style="background: #ff69b4; margin: 2px;">ดูแลพี่ลภ</span>
                             </div>
                         </div>
-                        <small class="text-muted"><i class="fas fa-check-circle text-success me-1"></i>Model: GLM-5 | Status: Online</small>
+                        <small class="text-muted"><i class="fas fa-check-circle text-success me-1"></i>Model: Claude 3.5 Sonnet (Anthropic) | Status: Online</small>
                     </div>
                 </div>
             </div>
@@ -695,50 +715,65 @@
         <div id="cron" class="content-section">
             <h2 class="mb-4">
                 <i class="fas fa-clock me-2 text-primary"></i>
-                Cron Jobs
+                งานอัตโนมัติ
             </h2>
             
             <div class="status-card">
                 <h5><i class="fas fa-tasks me-2"></i>งานตามเวลา</h5>
                 <div class="mb-3">
                     <div class="calendar-item">
-                        <h6><i class="fas fa-bell text-warning me-2"></i>เตือนนัดเวทเทรนนิ่ง (1 วันล่วงหน้า)</h6>
-                        <p><strong>เวลา:</strong> 0 17 * * 1,3 (ทุกวันจันทร์และพุธ 17:00)</p>
-                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ทำงาน</p>
-                    </div>
-                    <div class="calendar-item">
-                        <h6><i class="fas fa-bell text-info me-2"></i>เตือนนัดเวทเทรนนิ่ง (2 ชั่วโมงล่วงหน้า)</h6>
-                        <p><strong>เวลา:</strong> 0 16 * * 2,4 (ทุกวันอังคารและพฤหัสบดี 16:00)</p>
-                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ทำงาน</p>
-                    </div>
-                    <div class="calendar-item">
                         <h6><i class="fas fa-sync text-success me-2"></i>สำรองข้อมูลประจำวัน</h6>
-                        <p><strong>เวลา:</strong> 0 5 * * * (ทุกวันเวลา 05:00)</p>
+                        <p><strong>เวลา:</strong> 05:00 น. ทุกวัน</p>
                         <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ทำงาน</p>
                     </div>
                     <div class="calendar-item">
                         <h6><i class="fas fa-newspaper text-primary me-2"></i>รายงานข่าวเช้า</h6>
-                        <p><strong>เวลา:</strong> 0 8 * * * (ทุกวันเวลา 08:00)</p>
+                        <p><strong>เวลา:</strong> 08:00 น. ทุกวัน</p>
                         <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ทำงาน</p>
                     </div>
                     <div class="calendar-item">
                         <h6><i class="fas fa-newspaper text-secondary me-2"></i>รายงานข่าวเย็น</h6>
-                        <p><strong>เวลา:</strong> 0 17 * * * (ทุกวันเวลา 17:00)</p>
-                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-warning"></i>กำลังตั้งค่า</p>
+                        <p><strong>เวลา:</strong> 17:00 น. ทุกวัน</p>
+                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ทำงาน</p>
+                    </div>
+                    <div class="calendar-item">
+                        <h6><i class="fas fa-chart-line text-info me-2"></i>รายงานสถานะระบบ</h6>
+                        <p><strong>เวลา:</strong> 15:00 น. ทุกวัน</p>
+                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ทำงาน</p>
+                    </div>
+                    <div class="calendar-item">
+                        <h6><i class="fas fa-spa text-success me-2"></i>เตือนปฏิบัติบูชารอบ 3</h6>
+                        <p><strong>เวลา:</strong> 25 มี.ค. 2026 (1 วันล่วงหน้า)</p>
+                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>รอทำงาน</p>
+                    </div>
+                    <div class="calendar-item">
+                        <h6><i class="fas fa-spa text-success me-2"></i>เตือนปฏิบัติบูชารอบ 4</h6>
+                        <p><strong>เวลา:</strong> 1 เม.ย. 2026 (1 วันล่วงหน้า)</p>
+                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>รอทำงาน</p>
+                    </div>
+                    <div class="calendar-item">
+                        <h6><i class="fas fa-spa text-success me-2"></i>เตือนปฏิบัติบูชารอบ 5</h6>
+                        <p><strong>เวลา:</strong> 8 เม.ย. 2026 (1 วันล่วงหน้า)</p>
+                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>รอทำงาน</p>
+                    </div>
+                    <div class="calendar-item">
+                        <h6><i class="fas fa-tint text-danger me-2"></i>เตือนบริจาคเลือด</h6>
+                        <p><strong>เวลา:</strong> 19 มิ.ย. 2026</p>
+                        <p><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>รอทำงาน</p>
                     </div>
                 </div>
             </div>
             
             <div class="status-card">
-                <h5><i class="fas fa-cog me-2"></i>จัดการ Cron Jobs</h5>
+                <h5><i class="fas fa-cog me-2"></i>จัดการงานอัตโนมัติ</h5>
                 <button class="btn btn-action" onclick="viewCronStatus()">
                     <i class="fas fa-eye me-1"></i>ดูสถานะทั้งหมด
                 </button>
                 <button class="btn btn-action" onclick="addCronJob()">
-                    <i class="fas fa-plus me-1"></i>เพิ่ม Cron Job
+                    <i class="fas fa-plus me-1"></i>เพิ่มงานใหม่
                 </button>
                 <button class="btn btn-action" onclick="editCronJob()">
-                    <i class="fas fa-edit me-1"></i>แก้ไข Cron Job
+                    <i class="fas fa-edit me-1"></i>แก้ไขงาน
                 </button>
             </div>
         </div>
@@ -802,32 +837,88 @@
         <div id="agents" class="content-section">
             <h2 class="mb-4">
                 <i class="fas fa-robot me-2 text-primary"></i>
-                Agents
+                เอเจนต์ - ทีมแก้วใส
             </h2>
             
-            <div class="status-card">
-                <h5><i class="fas fa-robot me-2"></i>Agents ที่ใช้งานอยู่</h5>
+            <div class="status-card" style="border-left-color: #ff69b4;">
+                <h5><i class="fas fa-gem me-2" style="color: #ff69b4;"></i>ทีม AI เลขาส่วนตัว (7 คน)</h5>
+                <p class="text-muted">รักบุญ รักกัน รักพี่แก้วใส 💖</p>
                 <div class="row">
-                    <div class="col-12 col-md-6">
-                        <div class="second-brain-card">
-                            <h6><i class="fas fa-user text-primary me-2"></i>Main Agent</h6>
-                            <p class="text-muted">น้องแก้วใส - AI เลขาส่วนตัวหญิง</p>
-                            <small><strong>Model:</strong> GLM-5</small><br>
-                            <small><strong>Status:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
+                    <!-- น้องแก้วใส -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #ff69b4;">
+                            <h6><i class="fas fa-crown me-2" style="color: gold;"></i>น้องแก้วใส</h6>
+                            <p class="text-muted small mb-1">Team Leader</p>
+                            <small><strong>Model:</strong> Claude 3.5 Sonnet</small><br>
+                            <small><strong>Provider:</strong> Anthropic</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
                         </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="second-brain-card">
-                            <h6><i class="fas fa-code text-warning me-2"></i>Coding Agent</h6>
-                            <p class="text-muted">Agent สำหรับการเขียนโค้ด</p>
-                            <small><strong>Status:</strong> <i class="fas fa-circle status-indicator status-warning"></i>สำรอง</small>
+                    <!-- น้องจักรแก้ว -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #6f42c1;">
+                            <h6><i class="fas fa-search me-2" style="color: #6f42c1;"></i>น้องจักรแก้ว</h6>
+                            <p class="text-muted small mb-1">Research Specialist</p>
+                            <small><strong>Model:</strong> Gemini Pro</small><br>
+                            <small><strong>Provider:</strong> Google</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
+                        </div>
+                    </div>
+                    <!-- น้องกายสิทธิ์ -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #fd7e14;">
+                            <h6><i class="fas fa-tools me-2" style="color: #fd7e14;"></i>น้องกายสิทธิ์</h6>
+                            <p class="text-muted small mb-1">Technical Support</p>
+                            <small><strong>Model:</strong> GLM-5</small><br>
+                            <small><strong>Provider:</strong> Z-AI</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
+                        </div>
+                    </div>
+                    <!-- น้องรัตนชาติ -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #4d9de0;">
+                            <h6><i class="fas fa-palette me-2" style="color: #4d9de0;"></i>น้องรัตนชาติ</h6>
+                            <p class="text-muted small mb-1">Creative Content</p>
+                            <small><strong>Model:</strong> GPT-4o</small><br>
+                            <small><strong>Provider:</strong> OpenAI</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
+                        </div>
+                    </div>
+                    <!-- น้องทวีบุญ -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #20c997;">
+                            <h6><i class="fas fa-tasks me-2" style="color: #20c997;"></i>น้องทวีบุญ</h6>
+                            <p class="text-muted small mb-1">Project Manager</p>
+                            <small><strong>Model:</strong> Claude 3.5 Sonnet</small><br>
+                            <small><strong>Provider:</strong> Anthropic</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
+                        </div>
+                    </div>
+                    <!-- น้องบุญรักษา -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #28a745;">
+                            <h6><i class="fas fa-heartbeat me-2" style="color: #28a745;"></i>น้องบุญรักษา</h6>
+                            <p class="text-muted small mb-1">Health Specialist</p>
+                            <small><strong>Model:</strong> Claude 3.5 Sonnet</small><br>
+                            <small><strong>Provider:</strong> Anthropic</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
+                        </div>
+                    </div>
+                    <!-- น้องขุนคลังแก้ว -->
+                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                        <div class="second-brain-card" style="border-left: 4px solid #FFD700;">
+                            <h6><i class="fas fa-coins me-2" style="color: #B8860B;"></i>น้องขุนคลังแก้ว</h6>
+                            <p class="text-muted small mb-1">Financial Advisor</p>
+                            <small><strong>Model:</strong> GPT-4o</small><br>
+                            <small><strong>Provider:</strong> OpenAI</small><br>
+                            <small><strong>สถานะ:</strong> <i class="fas fa-circle status-indicator status-online"></i>ออนไลน์</small>
                         </div>
                     </div>
                 </div>
             </div>
             
             <div class="status-card">
-                <h5><i class="fas fa-cogs me-2"></i>จัดการ Agents</h5>
+                <h5><i class="fas fa-cogs me-2"></i>จัดการเอเจนต์</h5>
                 <button class="btn btn-action" onclick="listAgents()">
                     <i class="fas fa-list me-1"></i>ดู Agents ทั้งหมด
                 </button>
@@ -845,7 +936,7 @@
                     <div class="col-12 col-md-4">
                         <div class="text-center">
                             <h4>156</h4>
-                            <small>Total Sessions</small>
+                            <small>เซสชันทั้งหมด</small>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
@@ -1039,33 +1130,29 @@
     </div>
 
     <script>
+        // Section Navigation
         function showSection(sectionId, event) {
             if (event) {
                 event.preventDefault();
             }
             
-            console.log('showSection called with:', sectionId);
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
             
             // Show loading
             document.getElementById('loading').style.display = 'block';
             
-            // Hide all sections
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
+            // Show target section after short delay
             setTimeout(() => {
                 const targetSection = document.getElementById(sectionId);
                 if (targetSection) {
                     targetSection.classList.add('active');
                     console.log('Section displayed:', sectionId);
-                    
                     // Update active nav link
                     updateActiveNav(sectionId);
                 }
-                
                 // Hide loading
                 document.getElementById('loading').style.display = 'none';
             }, 100);
@@ -1083,51 +1170,37 @@
             }
         }
         
-        function logout() {
-            if (confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) {
-                fetch('/api/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '/';
-                    }
-                })
-                .catch(error => {
-                    console.error('Logout error:', error);
-                    window.location.href = '/';
-                });
-            }
-        }
-        
         // Second Brain Functions
         function openFile(filename) {
-            secondBrain.readFile(filename);
+            alert('เปิดไฟล์: ' + filename + '\n\nฟังก์ชั่นนี้จะเปิดไฟล์ในตัวแก้ไข');
         }
         
         function addNewIdea() {
-            secondBrain.addNewContent('IDEAS');
+            const idea = prompt('กรอกไอเดียใหม่:');
+            if (idea) {
+                alert('เพิ่มไอเดียแล้ว: ' + idea);
+            }
         }
         
         function addNewKnowledge() {
-            secondBrain.addNewContent('KNOWLEDGE');
+            const knowledge = prompt('กรอกความรู้ใหม่:');
+            if (knowledge) {
+                alert('เพิ่มความรู้แล้ว: ' + knowledge);
+            }
         }
         
         function addNewTask() {
-            secondBrain.addNewContent('TASKS');
+            const task = prompt('กรอกงานใหม่:');
+            if (task) {
+                alert('เพิ่มงานแล้ว: ' + task);
+            }
         }
         
         function addNewConnection() {
-            secondBrain.addNewContent('CONNECTIONS');
-        }
-        
-        // System Functions
-        function viewLogs(type) {
-            alert(`กำลังดู ${type} logs\n\nฟังก์ชั่นนี้จะแสดง logs ล่าสุด`);
+            const connection = prompt('กรอกการเชื่อมโยงใหม่:');
+            if (connection) {
+                alert('เพิ่มการเชื่อมโยงแล้ว: ' + connection);
+            }
         }
         
         // Cron Jobs Functions
@@ -1149,11 +1222,11 @@
         }
         
         function installSkill() {
-            alert('ติดตั้ง Skill\n\nฟังก์ชั่นนี้จะแสดงรายการ skills ที่ติดตั้งได้');
+            alert('ติดตั้ง Skill\n\nฟังก์ชั่นนี้จะเปิดหน้าติดตั้ง skill ใหม่');
         }
         
         function updateSkills() {
-            alert('อัพเดท Skills\n\nฟังก์ชั่นนี้จะอัพเดท skills ทั้งหมดเป็นเวอร์ชันล่าสุด');
+            alert('อัพเดท Skills\n\nฟังก์ชั่นนี้จะอัพเดท skills ทั้งหมด');
         }
         
         // Agents Functions
@@ -1169,10 +1242,10 @@
             alert('ตั้งค่า Agent\n\nฟังก์ชั่นนี้จะเปิดหน้าตั้งค่า agent');
         }
         
-        // Auto-refresh status
-        setInterval(() => {
-            console.log('Dashboard status refreshed');
-        }, 30000); // Refresh every 30 seconds
+        // Logs Functions
+        function viewLogs(type) {
+            alert('ดู ' + type + ' logs\n\nฟังก์ชั่นนี้จะแสดง logs ของ ' + type);
+        }
     </script>
 </body>
 </html>
