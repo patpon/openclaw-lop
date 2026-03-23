@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมุดบันทึกความดี - น้องแก้วใส</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Sarabun', sans-serif;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background: rgba(255,255,255,0.95);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 20px;
+        }
+        .sidebar .nav-link {
+            color: #333;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .sidebar .nav-link.active {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; }
+        }
+        .merit-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .merit-item {
+            background: linear-gradient(to right, #e8f5e9, white);
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 0 10px 10px 0;
+        }
+        .merit-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 3px;
+        }
+        .badge-dana { background: #e3f2fd; color: #1976d2; }
+        .badge-sila { background: #f3e5f5; color: #7b1fa2; }
+        .badge-bhavana { background: #e8f5e9; color: #388e3c; }
+        .badge-saddha { background: #fff3e0; color: #f57c00; }
+        .badge-panna { background: #e0f7fa; color: #00838f; }
+        .stats-card {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        .header-gold {
+            background: linear-gradient(135deg, #ffd700, #ffb300);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="text-center mb-4">
+            <h5 class="header-gold"><i class="fas fa-gem me-2"></i>น้องแก้วใส</h5>
+            <small class="text-muted">OpenClaw Dashboard</small>
+        </div>
+        <hr>
+        <nav>
+            <a href="https://ajpatpon.cloud/dashboard.html" class="nav-link">
+                <i class="fas fa-home me-2"></i>ภาพรวม
+            </a>
+            <a href="https://ajpatpon.cloud/team.html" class="nav-link">
+                <i class="fas fa-users me-2"></i>ทีม
+            </a>
+            <a href="https://ajpatpon.cloud/calendar-summary.html" class="nav-link">
+                <i class="fas fa-calendar-alt me-2"></i>ปฏิทิน
+            </a>
+            <a href="https://ajpatpon.cloud/merit-diary.html" class="nav-link active">
+                <i class="fas fa-book-open me-2"></i>บันทึกความดี
+            </a>
+        </nav>
+        <hr>
+        <div class="text-center">
+            <small class="text-muted">© 2026 น้องแก้วใส</small>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+    <div class="container-fluid py-4">
+        <!-- Header -->
+        <div class="merit-card text-center">
+            <h1 class="header-gold"><i class="fas fa-book-open me-2"></i>สมุดบันทึกความดี</h1>
+            <p class="text-muted mb-0">สร้างบารมีทุกวัน สะสมเป็นอนันต์ ✨</p>
+            <p class="text-muted small">ผู้บันทึก: พี่ลภ | ช่วยเขียนโดย: น้องรัตนชาติ</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="row mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stats-card">
+                    <h3>4</h3>
+                    <small>วันที่บันทึก</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stats-card" style="background: linear-gradient(135deg, #2196f3, #1976d2);">
+                    <h3>4</h3>
+                    <small>ครั้งที่นั่ง</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stats-card" style="background: linear-gradient(135deg, #ff9800, #f57c00);">
+                    <h3>72</h3>
+                    <small>นาทีรวม</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stats-card" style="background: linear-gradient(135deg, #9c27b0, #7b1fa2);">
+                    <h3>93%</h3>
+                    <small>Relax สูงสุด</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- สรุปการนั่งสมาธิตั้งแต่แรก -->
+        <div class="merit-card">
+            <h4 class="mb-3"><i class="fas fa-spa text-success me-2"></i>ประวัติการนั่งสมาธิ</h4>
+            <p class="text-muted small">เริ่มต้น: 19 มีนาคม 2026</p>
+            
+            <div class="table-responsive">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>วันที่</th>
+                            <th>เวลา</th>
+                            <th>Relaxation</th>
+                            <th>Calm</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>19 มี.ค.</td>
+                            <td>20 นาที</td>
+                            <td><span class="badge bg-warning">71%</span></td>
+                            <td>29%</td>
+                            <td>เริ่มต้น</td>
+                        </tr>
+                        <tr>
+                            <td>19 มี.ค. (2)</td>
+                            <td>20 นาที</td>
+                            <td><span class="badge bg-info">74%</span></td>
+                            <td>39%</td>
+                            <td>ดีขึ้น</td>
+                        </tr>
+                        <tr>
+                            <td>19 มี.ค. (3)</td>
+                            <td>20 นาที</td>
+                            <td><span class="badge bg-success">93%</span></td>
+                            <td>7%</td>
+                            <td>⭐ ดีมาก!</td>
+                        </tr>
+                        <tr>
+                            <td>20 มี.ค.</td>
+                            <td>12 นาที</td>
+                            <td><span class="badge bg-success">91%</span></td>
+                            <td>8%</td>
+                            <td>⭐ ดีมาก!</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td>22 มี.ค.</td>
+                            <td>10 นาที</td>
+                            <td><span class="badge bg-success">ดี</span></td>
+                            <td>สงบ</td>
+                            <td>✅ วันนี้</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- พัฒนาการ -->
+            <div class="mt-3 p-3" style="background: #e8f5e9; border-radius: 10px;">
+                <h6 class="mb-2"><i class="fas fa-chart-line text-success me-2"></i>พัฒนาการ</h6>
+                <div class="progress mb-2" style="height: 20px;">
+                    <div class="progress-bar bg-success" style="width: 93%;">Relaxation: 93% (สูงสุด)</div>
+                </div>
+                <div class="row text-center small">
+                    <div class="col-3">
+                        <strong class="text-success">71→93%</strong><br>
+                        <span class="text-muted">Relaxation</span>
+                    </div>
+                    <div class="col-3">
+                        <strong class="text-primary">72 นาที</strong><br>
+                        <span class="text-muted">เวลารวม</span>
+                    </div>
+                    <div class="col-3">
+                        <strong class="text-warning">4 ครั้ง</strong><br>
+                        <span class="text-muted">นั่งแล้ว</span>
+                    </div>
+                    <div class="col-3">
+                        <strong class="text-info">4 วัน</strong><br>
+                        <span class="text-muted">ติดต่อกัน</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ข้อสังเกต -->
+            <div class="alert alert-success mt-3">
+                <strong><i class="fas fa-lightbulb me-2"></i>ข้อสังเกต:</strong>
+                <ul class="mb-0 small">
+                    <li>Relaxation เพิ่มขึ้นจาก 71% → 93% (ดีขึ้นมาก!)</li>
+                    <li>เริ่มเข้าสู่ช่วง Deep Relax ได้</li>
+                    <li>Active (ฟุ้ง) ลดลงเหลือ 0-1%</li>
+                    <li>จิตเริ่มนิ่งและควบคุมได้ดีขึ้น</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Today's Entry -->
+        <div class="merit-card">
+            <h4 class="mb-3"><i class="fas fa-calendar-day text-primary me-2"></i>วันอาทิตย์ที่ 22 มีนาคม 2026</h4>
+            
+            <!-- Image -->
+            <div class="text-center mb-3">
+                <img src="images/merit-2026-03-22.jpg" alt="สวดมนต์ทำวัตรเย็น" class="img-fluid rounded" style="max-height: 400px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <p class="text-white mt-2 small"><i class="fas fa-camera me-1"></i>สวดมนต์ทำวัตรเย็น วัดเทพสรธรรมาราม</p>
+                <p class="text-white-50 small"><i class="fas fa-map-marker-alt me-1"></i>📍 วัดเทพสรธรรมาราม — ปทุมธานี (<a href="https://maps.google.com/?q=13.969759,100.563903" target="_blank" class="text-warning">13.969759, 100.563903</a>)</p>
+            </div>
+            
+            <div class="merit-item">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-check-circle text-success fa-lg me-3"></i>
+                    <div>
+                        <h6 class="mb-1">สวดมนต์ทำวัตรเย็น</h6>
+                        <small class="text-muted">วัดเทพสรธรรมาราม — ปทุมธานี</small>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <span class="merit-badge badge-bhavana"><i class="fas fa-om me-1"></i>ภาวนา</span>
+                    <span class="merit-badge badge-saddha"><i class="fas fa-praying-hands me-1"></i>ศรัทธา</span>
+                </div>
+            </div>
+
+            <!-- สรุปการนั่งสมาธิ -->
+            <div class="merit-item" style="background: linear-gradient(to right, #e8f5e9, white); border-left-color: #2e7d32;">
+                <h6 class="mb-2"><i class="fas fa-spa text-success me-2"></i>สรุปการนั่งสมาธิ</h6>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h4 class="text-success mb-0">10</h4>
+                        <small class="text-muted">นาที</small>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="text-primary mb-0">1</h4>
+                        <small class="text-muted">ครั้ง</small>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="text-warning mb-0">✨</h4>
+                        <small class="text-muted">สงบ</small>
+                    </div>
+                </div>
+                <div class="mt-2 small text-muted">
+                    <i class="fas fa-lightbulb text-warning me-1"></i> 
+                    จิตสงบ ผ่อนคลาย รู้สึกดี
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-star me-2"></i>
+                <strong>บันทึกพิเศษ:</strong> เริ่มต้นสมุดบันทึกความดี
+            </div>
+        </div>
+
+        <!-- บารมี 10 -->
+        <div class="merit-card">
+            <h4 class="mb-3"><i class="fas fa-gem text-warning me-2"></i>บารมี 10 ที่สะสม</h4>
+            <div class="row">
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #e3f2fd; border-radius: 8px;">
+                        <strong>ทาน</strong><br>
+                        <span class="text-primary">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #f3e5f5; border-radius: 8px;">
+                        <strong>ศีล</strong><br>
+                        <span class="text-purple">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #e8f5e9; border-radius: 8px;">
+                        <strong>ภาวนา</strong><br>
+                        <span class="text-success">1 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #fff3e0; border-radius: 8px;">
+                        <strong>ศรัทธา</strong><br>
+                        <span class="text-warning">1 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #e0f7fa; border-radius: 8px;">
+                        <strong>ปัญญา</strong><br>
+                        <span class="text-info">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #fce4ec; border-radius: 8px;">
+                        <strong>วิริยะ</strong><br>
+                        <span class="text-danger">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #f1f8e9; border-radius: 8px;">
+                        <strong>ขันติ</strong><br>
+                        <span class="text-success">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #ede7f6; border-radius: 8px;">
+                        <strong>สัจจะ</strong><br>
+                        <span class="text-purple">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #fff8e1; border-radius: 8px;">
+                        <strong>เมตตา</strong><br>
+                        <span class="text-warning">0 ครั้ง</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4 mb-2">
+                    <div class="p-2 text-center" style="background: #e0e0e0; border-radius: 8px;">
+                        <strong>อุเบกขา</strong><br>
+                        <span class="text-secondary">0 ครั้ง</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-white mt-4">
+            <p><i class="fas fa-hands-praying me-2"></i>สร้างบารมีทุกวัน สักนิด สักหน่อย สะสมเป็นอนันต์</p>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
