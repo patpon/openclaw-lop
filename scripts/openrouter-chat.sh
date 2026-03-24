@@ -2,8 +2,9 @@
 # OpenRouter Chat - Emergency Claude Alternative
 # Usage: ./openrouter-chat.sh "Your message here"
 
-OPENROUTER_API_KEY="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"
-MODEL="${ANTHROPIC_MODEL:-anthropic/claude-3-haiku}"
+API_KEY="sk-freee6849684e46a0339d226f6fe5b11fe1e41e9006891d60193"
+ENDPOINT="https://play.knplabai.com/ai/v1/chat/completions"
+MODEL="${MODEL:-gpt-4o-mini}"
 
 if [ -z "$1" ]; then
     echo "Usage: $0 \"Your message\""
@@ -13,9 +14,9 @@ fi
 
 MESSAGE="$1"
 
-curl -s https://openrouter.ai/api/v1/chat/completions \
+curl -s "$ENDPOINT" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $OPENROUTER_API_KEY" \
+  -H "Authorization: Bearer $API_KEY" \
   -d "{
     \"model\": \"$MODEL\",
     \"messages\": [
